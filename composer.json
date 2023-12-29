@@ -1,0 +1,43 @@
+{
+  "name": "cz/router",
+  "description": "A FastRoute-based router for use in Roots-based WordPress plugins and themes or any plugin or theme that use Illuminate/Container.",
+  "type": "package",
+  "license": "GNU",
+  "authors": [
+    {
+      "name": "Craig Wann",
+      "email": "craig@codezone.io"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "CZ\\Router\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "ext-json": "*",
+    "illuminate/container": "^v10.0.0",
+    "illuminate/support": "^v10.0.0",
+    "illuminate/http": "^v10.0.0",
+    "nikic/fast-route": "^1.3.0",
+    "spatie/laravel-data": "^3.11"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10",
+    "squizlabs/php_codesniffer": "^3.8",
+    "mreduar/laravel-phpcs": "^1.8"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
