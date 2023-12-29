@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: php-actions/composer@v4
+      - uses: php-actions/composer@v3
 
       - name: PHPUnit Tests
         uses: php-actions/phpunit@master
