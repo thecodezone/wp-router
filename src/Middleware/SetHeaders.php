@@ -11,11 +11,11 @@ class SetHeaders implements Middleware
     public function handle(Request $request, Response $response, $next)
     {
 
-        foreach ($response->get_headers() as $key => $value) {
-            header($key . ': ' . $value);
+        foreach ($response->headers->all() as $key => $value) {
+            header($key . ': ' . $value[0]);
         }
 
-        if (is_array($response->get_data())) {
+        if (is_array($response->getContent())) {
             header('Content-Type: application/json');
         }
 

@@ -2,11 +2,7 @@
 
 namespace Tests;
 
-use CZ\Router\Middleware\CanManageDT;
-use CZ\Router\Middleware\DispatchController;
-use CZ\Router\Middleware\Render;
 use CZ\Router\Middleware\Route;
-use CZ\Router\Middleware\Stack;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use function CZ\Router\container;

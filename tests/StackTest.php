@@ -2,10 +2,8 @@
 
 namespace Tests;
 
-use CZ\Router\FastRoute\Routes;
-use CZ\Router\Middleware\CanManageDT;
-use CZ\Router\Middleware\DispatchController;
 use CZ\Router\Middleware\Render;
+use CZ\Router\Middleware\SetHeaders;
 use CZ\Router\Middleware\Stack;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,6 +20,8 @@ class StackTest  extends TestCase {
 		$request = container()->make(Request::class);
 		$response = container()->make(Response::class);
 
+		$response->setStatusCode(302);
+
 		$mock = $this->getMockBuilder( Render::class )
 			->getMock();
 		$mock->expects( $this->once() )
@@ -32,7 +32,7 @@ class StackTest  extends TestCase {
 		    ->willReturn( $response );
 
 		$stack = container()->make( Stack::class );
-		$stack->push(CanManageDT::class);
+		$stack->push(SetHeaders::class);
 		$stack->push($mock);
 		$response = $stack->run($request, $response);
 
