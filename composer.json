@@ -2,7 +2,7 @@
   "name": "cz/router",
   "description": "A FastRoute-based router for use in Roots-based WordPress plugins and themes or any plugin or theme that use Illuminate/Container.",
   "type": "package",
-  "license": "GNU",
+  "license": "GPL-2.0-only",
   "authors": [
     {
       "name": "Craig Wann",
