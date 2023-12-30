@@ -1,6 +1,6 @@
 <?php
 
-namespace CZ\Router\Factories;
+namespace CodeZone\Router\Factories;
 
 use Illuminate\Container\Container;
 use Illuminate\Http\Response;
@@ -29,7 +29,7 @@ class ResponseFactory
      */
     public function make($value = null, Response|null $response = null): Response
     {
-        return apply_filters('cz/router/response', $this->mapResponse($value, $response));
+        return apply_filters('codezone/router/response', $this->mapResponse($value, $response));
     }
 
     /**

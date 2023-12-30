@@ -1,17 +1,17 @@
 <?php
 
-namespace CZ\Router\Middleware;
+namespace CodeZone\Router\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\is_json;
+use function CodeZone\Router\is_json;
 
 /**
  * Class RedirectMiddleware
  *
  * This middleware is used to redirect the user to the URL specified in the response body.
  *
- * @package CZ\Router\Middleware
+ * @package CodeZone\Router\Middleware
  */
 class HandleRedirects implements Middleware
 {

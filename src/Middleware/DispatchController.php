@@ -1,11 +1,11 @@
 <?php
 
-namespace CZ\Router\Middleware;
+namespace CodeZone\Router\Middleware;
 
-use CZ\Router\Factories\ResponseFactory;
+use CodeZone\Router\Factories\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 /**
  * Class Dispatch

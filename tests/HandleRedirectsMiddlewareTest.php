@@ -2,10 +2,10 @@
 
 namespace Tests;
 
-use CZ\Router\Middleware\HandleRedirects;
+use CodeZone\Router\Middleware\HandleRedirects;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 class HandleRedirectsMiddlewareTest extends TestCase {
 	use HasRouter;

@@ -2,12 +2,12 @@
 
 namespace Tests;
 
-use CZ\Router\Middleware\Render;
-use CZ\Router\Middleware\SetHeaders;
-use CZ\Router\Middleware\Stack;
+use CodeZone\Router\Middleware\Render;
+use CodeZone\Router\Middleware\SetHeaders;
+use CodeZone\Router\Middleware\Stack;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 class StackTest  extends TestCase {
 	use HasRouter;

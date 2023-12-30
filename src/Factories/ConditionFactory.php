@@ -1,10 +1,10 @@
 <?php
 
-namespace CZ\Router\Factories;
+namespace CodeZone\Router\Factories;
 
 use ArrayAccess;
-use CZ\Router\Conditions\CallbackCondition;
-use CZ\Router\Conditions\Condition;
+use CodeZone\Router\Conditions\CallbackCondition;
+use CodeZone\Router\Conditions\Condition;
 use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
 

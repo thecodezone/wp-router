@@ -1,5 +1,5 @@
 {
-  "name": "cz/router",
+  "name": "codezone/router",
   "description": "A FastRoute-based router for use in Roots-based WordPress plugins and themes or any plugin or theme that use Illuminate/Container.",
   "type": "package",
   "license": "GPL-2.0-only",
@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "CZ\\Router\\": "src/"
+      "CodeZone\\Router\\": "src/"
     },
     "files": [
       "src/helpers.php"

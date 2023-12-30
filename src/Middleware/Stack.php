@@ -1,12 +1,12 @@
 <?php
 
-namespace CZ\Router\Middleware;
+namespace CodeZone\Router\Middleware;
 
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 class Stack extends Collection
 {

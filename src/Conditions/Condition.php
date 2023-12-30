@@ -1,6 +1,6 @@
 <?php
 
-namespace CZ\Router\Conditions;
+namespace CodeZone\Router\Conditions;
 
 interface Condition
 {

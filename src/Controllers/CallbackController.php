@@ -1,6 +1,6 @@
 <?php
 
-namespace CZ\Router\Controllers;
+namespace CodeZone\Router\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

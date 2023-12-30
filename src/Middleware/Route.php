@@ -1,13 +1,13 @@
 <?php
 
-namespace CZ\Router\Middleware;
+namespace CodeZone\Router\Middleware;
 
-use CZ\Router\FastRoute\Routes;
-use CZ\Router\Router;
+use CodeZone\Router\FastRoute\Routes;
+use CodeZone\Router\Router;
 use FastRoute;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 /**
  * Route Middleware
@@ -29,7 +29,7 @@ class Route implements Middleware
     {
         $http_method         = $request->getMethod();
         $uri                 = $request->getRequestUri();
-        $routable_param_keys = apply_filters('cz/router/routable_params', [ 'page', 'action', 'tab' ]) ?? [];
+        $routable_param_keys = apply_filters('codezone/router/routable_params', [ 'page', 'action', 'tab' ]) ?? [];
         $routable_params     = collect($request->query->all())->only($routable_param_keys);
 
         // Strip query string (?foo=bar) and decode URI
@@ -54,11 +54,11 @@ class Route implements Middleware
                 $handler = $this->handler;
                 $handler($r);
             }
-            apply_filters('cz/router/routes', $r);
+            apply_filters('codezone/router/routes', $r);
         });
 
         $matches = apply_filters(
-            'cz/router/matched_routes',
+            'codezone/router/matched_routes',
             $dispatcher->dispatch($http_method, $uri)
         );
 

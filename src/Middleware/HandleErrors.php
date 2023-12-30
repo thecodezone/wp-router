@@ -1,6 +1,6 @@
 <?php
 
-namespace CZ\Router\Middleware;
+namespace CodeZone\Router\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,7 +10,7 @@ class HandleErrors implements Middleware
 
     public function handle(Request $request, Response $response, $next)
     {
-        $error_codes = apply_filters('cz/router/error-codes', [
+        $error_codes = apply_filters('codezone/router/error-codes', [
             400 => 'Bad Request',
             401 => 'Unauthorized',
             403 => 'Forbidden',

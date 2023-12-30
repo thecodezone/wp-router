@@ -2,10 +2,10 @@
 
 namespace Tests;
 
-use CZ\Router\Middleware\DispatchController;
+use CodeZone\Router\Middleware\DispatchController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 class DispatchMiddlewareTest extends TestCase {
 	use HasRouter;

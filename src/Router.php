@@ -1,8 +1,8 @@
 <?php
 
-namespace CZ\Router;
+namespace CodeZone\Router;
 
-use CZ\Router\Factories\DispatcherFactory;
+use CodeZone\Router\Factories\DispatcherFactory;
 use FastRoute\Dispatcher;
 use Illuminate\Container\Container;
 
@@ -17,7 +17,7 @@ class Router
      * Router constructor.
      *
      * @param array $config
-     * @param \CZ\Router\Factories\DispatcherFactory $dispatcherFactory
+     * @param \CodeZone\Router\Factories\DispatcherFactory $dispatcherFactory
      *
      * @throws \Exception
      */
@@ -33,7 +33,7 @@ class Router
     /**
      * Get the router instance
      *
-     * @return \CZ\Router\Router
+     * @return \CodeZone\Router\Router
      * @throws \Exception
      */
     public static function instance() : Router
@@ -47,7 +47,7 @@ class Router
     /**
      * Register the router with a container
      *
-     * @param \CZ\Router\DataObjects\Config $config
+     * @param \CodeZone\Router\DataObjects\Config $config
      *
      * @throws \Exception
      */

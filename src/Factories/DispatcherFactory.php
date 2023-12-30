@@ -1,10 +1,10 @@
 <?php
 
-namespace CZ\Router\Factories;
+namespace CodeZone\Router\Factories;
 
-use CZ\Router\FastRoute\Data;
-use CZ\Router\FastRoute\Dispatcher;
-use CZ\Router\FastRoute\Routes;
+use CodeZone\Router\FastRoute\Data;
+use CodeZone\Router\FastRoute\Dispatcher;
+use CodeZone\Router\FastRoute\Routes;
 use FastRoute\Dispatcher as BaseDispatcher;
 use function FastRoute\simpleDispatcher;
 

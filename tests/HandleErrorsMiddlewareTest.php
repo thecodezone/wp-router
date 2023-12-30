@@ -2,10 +2,10 @@
 
 namespace Tests;
 
-use CZ\Router\Middleware\HandleErrors;
+use CodeZone\Router\Middleware\HandleErrors;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 class HandleErrorsMiddlewareTest extends TestCase {
 	use HasRouter;

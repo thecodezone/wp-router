@@ -1,8 +1,8 @@
 <?php
 
-namespace CZ\Router\Factories;
+namespace CodeZone\Router\Factories;
 
-use CZ\Router\Middleware\Middleware;
+use CodeZone\Router\Middleware\Middleware;
 use Illuminate\Container\Container;
 
 class MiddlewareFactory

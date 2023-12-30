@@ -1,6 +1,6 @@
 <?php
 
-namespace CZ\Router\FastRoute;
+namespace CodeZone\Router\FastRoute;
 
 use FastRoute\Dispatcher\MarkBased;
 

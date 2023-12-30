@@ -1,12 +1,12 @@
 <?php
 
-namespace CZ\Router\FastRoute;
+namespace CodeZone\Router\FastRoute;
 
-use CZ\Router\Controllers\CallbackController;
-use CZ\Router\Factories\ConditionFactory;
+use CodeZone\Router\Controllers\CallbackController;
+use CodeZone\Router\Factories\ConditionFactory;
 use FastRoute\RouteCollector;
 use Illuminate\Support\Collection;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 /**
  * Class Routes

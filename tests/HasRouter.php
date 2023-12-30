@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use CZ\Router\Router;
+use CodeZone\Router\Router;
 use Illuminate\Container\Container;
 
 trait HasRouter {

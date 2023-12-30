@@ -2,11 +2,11 @@
 
 namespace Tests;
 
-use CZ\Router\Controllers\CallbackController;
-use CZ\Router\FastRoute\Routes;
-use CZ\Router\Router;
+use CodeZone\Router\Controllers\CallbackController;
+use CodeZone\Router\FastRoute\Routes;
+use CodeZone\Router\Router;
 use Illuminate\Container\Container;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 final class RouterTest extends TestCase
 {

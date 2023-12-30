@@ -15,7 +15,7 @@ The router uses the FastRoute dispatching library and integrates with the `Illum
 Import the Router class at the top of your PHP file:
 
 ```php
-use CZ\Router\Router;
+use CodeZone\Router\Router;
 ```
 
 ### Registering the Router
@@ -72,7 +72,7 @@ In this routing system, you can define conditional routes using `$r->condition(c
 Here is an example, where `IsFrontendPath` is a class that defines a condition for checking if the current request is not directed at an admin page:
 
 ```php
-namespace CZ\Router\Conditions;
+namespace CodeZone\Router\Conditions;
 
 class IsFrontendPath implements Condition {
     public function test(): bool {
@@ -100,9 +100,9 @@ Middleware can be used to modify the HTTP request or response, for instance, or 
 An example of middleware usage is a `LoggedIn` class, which checks if a user is logged in:
 
 ```php
-namespace CZ\Router\Middleware;
+namespace CodeZone\Router\Middleware;
 
-use CZ\Router\Illuminate\Http\Request;
+use CodeZone\Router\Illuminate\Http\Request;
 use WP_HTTP_Response;
 
 class LoggedIn implements Middleware {
@@ -128,13 +128,13 @@ Global middleware is applied to all routes and is registered by adding Middlewar
 Creating a new stack is done by passing an array of middleware class names to the `Stack` constructor. The following stack will process the entire request / response lifecycle of your theme or plugin.
 
 ```php
-use CZ\Router\Middleware\DispatchController;
-use CZ\Router\Middleware\HandleErrors;
-use CZ\Router\Middleware\HandleRedirects;
-use CZ\Router\Middleware\Render;
-use CZ\Router\Middleware\Route;
-use CZ\Router\Middleware\SetHeaders;
-use CZ\Router\Middleware\Stack;
+use CodeZone\Router\Middleware\DispatchController;
+use CodeZone\Router\Middleware\HandleErrors;
+use CodeZone\Router\Middleware\HandleRedirects;
+use CodeZone\Router\Middleware\Render;
+use CodeZone\Router\Middleware\Route;
+use CodeZone\Router\Middleware\SetHeaders;
+use CodeZone\Router\Middleware\Stack;
 
 $middleware = [
     Route::class,
@@ -189,33 +189,33 @@ These methods allow you to specify middleware that should only be executed for c
 This package uses the `apply_filters` function to give you control over certain functionalities. Below are the hooks you can use along with their descriptions.
 
 
-### 'cz/router/response' filter
+### 'codezone/router/response' filter
 
 This filter modifies the HTTP response from the router:
 
 ```php
-add_filter('cz/router/response', function($response) {
+add_filter('codezone/router/response', function($response) {
     return $response;
 });
 ```
 
-### 'cz/router/error-codes' filter
+### 'codezone/router/error-codes' filter
 
 This filter is used to modify the error codes.
 
 ```php
-add_filter('cz/router/error-codes', function($error_codes) {
+add_filter('codezone/router/error-codes', function($error_codes) {
     unset($error_codes[404]);
     return $error_codes;
 });
 ```
 
-### 'cz/router/routable_params' filter
+### 'codezone/router/routable_params' filter
 
 This filter allows you to modify the routable parameters in the router. These parameters are considered part of the route's path instead of only being passed to the `Request` object.
 
 ```php
-    add_filter('cz/router/routable_params', function($params) {
+    add_filter('codezone/router/routable_params', function($params) {
         $params['action', 'page', 'tab'];
     });
 
@@ -224,23 +224,23 @@ This filter allows you to modify the routable parameters in the router. These pa
     $r->get('/contact?action=submit', 'Plugin\Controllers\ContactController@submit');
 ```
 
-### 'cz/router/routes' filter
+### 'codezone/router/routes' filter
 
 This filter allows you to modify the routes in the router:
 
 ```php
-add_filter('cz/router/routes', function($routes) {
+add_filter('codezone/router/routes', function($routes) {
     $routes->get('/my-route', 'MyController');
 return $routes;
 });
 ```
 
-### 'cz/router/matched_routes' filter
+### 'codezone/router/matched_routes' filter
 
 This filter allows you to modify the matched routes in the router:
 
 ```php
-add_filter('cz/router/matched_routes', function($matchedRoutes) {
+add_filter('codezone/router/matched_routes', function($matchedRoutes) {
     $matchedRoutes[0] =  true;
     $matchedRoutes[1] =  [
         'handler' => [

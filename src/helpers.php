@@ -1,6 +1,6 @@
 <?php
 
-namespace CZ\Router;
+namespace CodeZone\Router;
 
 use Illuminate\Container\Container;
 

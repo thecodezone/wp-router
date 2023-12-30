@@ -2,10 +2,10 @@
 
 namespace Tests;
 
-use CZ\Router\Middleware\Route;
+use CodeZone\Router\Middleware\Route;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function CZ\Router\container;
+use function CodeZone\Router\container;
 
 class RouteMiddlewareTest extends TestCase {
 	use HasRouter;

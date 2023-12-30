@@ -1,6 +1,6 @@
 <?php
 
-namespace CZ\Router\Middleware;
+namespace CodeZone\Router\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
