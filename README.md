@@ -254,3 +254,23 @@ add_filter('codezone/router/matched_routes', function($matchedRoutes) {
     return $matchedRoute;
 });
 ```
+
+### 'codezone/router/render' action
+
+An action to render the response. This action is called after the router has matched a route and before the response is sent to the browser.
+
+```php
+add_action('codezone/router/render', function($response) {
+    echo $response->getContent();
+});
+```
+
+### 'codezone/router/render/json' action
+
+An action to render the response as JSON. This action is called after the router has matched a route and before the response is sent to the browser.
+
+```php
+add_action('codezone/router/render/json', function($response) {
+    echo json_encode($response->getContent());
+});
+```

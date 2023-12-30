@@ -10,14 +10,24 @@ use Illuminate\Http\Response;
 use function CodeZone\Router\container;
 
 /**
- * Route Middleware
+ * Represents a route in an application.
  *
- * @see https://github.com/nikic/FastRoute
+ * This class implements the Middleware interface, allowing it to be used as a middleware in a middleware stack.
  */
 class Route implements Middleware
 {
+	/**
+	 * @var mixed|null $handler Used for testing, but could also be used to call a custom handler rather than relying on a WordPress filter.
+	 */
     protected $handler = null;
 
+	/**
+	 * Constructs a new instance of the class.
+	 *
+	 * @param callable|null $handler The callable handler (optional).
+	 *
+	 * @return void
+	 */
     public function __construct(callable|null $handler = null)
     {
         if ($handler) {
@@ -25,6 +35,15 @@ class Route implements Middleware
         }
     }
 
+	/**
+	 * Handles the request by matching it with the appropriate route and applying the route's data to the request.
+	 *
+	 * @param Request $request The request object.
+	 * @param Response $response The response object.
+	 * @param callable $next The next middleware or request handler.
+	 *
+	 * @return bool|mixed Returns false if no route is found, otherwise returns the result of calling the next middleware or request handler.
+	 */
     public function handle(Request $request, Response $response, $next)
     {
         $http_method         = $request->getMethod();

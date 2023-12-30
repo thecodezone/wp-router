@@ -6,21 +6,42 @@ use CodeZone\Router\Factories\DispatcherFactory;
 use FastRoute\Dispatcher;
 use Illuminate\Container\Container;
 
+/**
+ * Router
+ *
+ * The Router class handles routing functionality within the application.
+ *
+ * @package CodeZone\Router
+ */
 class Router
 {
+	/**
+	 * @var Container|mixed
+	 */
     public Container $container;
+
+
+	/**
+	 * @var array
+	 */
     public array $config;
+
+	/**
+	 * @var Router|null
+	 */
     protected static ?Router $instance = null;
+
+	/**
+	 * @var DispatcherFactory
+	 */
     protected DispatcherFactory $dispatcherFactory;
 
-    /**
-     * Router constructor.
-     *
-     * @param array $config
-     * @param \CodeZone\Router\Factories\DispatcherFactory $dispatcherFactory
-     *
-     * @throws \Exception
-     */
+	/**
+	 * @param array $config
+	 * @param DispatcherFactory $dispatcherFactory
+	 *
+	 * @throws \Exception
+	 */
     public function __construct(array $config, DispatcherFactory $dispatcherFactory)
     {
         static::validateConfig($config);

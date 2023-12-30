@@ -19,11 +19,27 @@ class DispatchController implements Middleware
 {
     protected $response_factory;
 
+	/**
+	 * Class constructor
+	 *
+	 * @param ResponseFactory $response_factory The response factory object used to create responses
+	 *
+	 * @return void
+	 */
     public function __construct(ResponseFactory $response_factory)
     {
         $this->response_factory = $response_factory;
     }
 
+	/**
+	 * Handles the incoming request and returns the response.
+	 *
+	 * @param Request $request The incoming request object
+	 * @param Response $response The response object to be modified
+	 * @param mixed $next The next middleware or handler in the chain
+	 *
+	 * @return mixed Returns the modified response object
+	 */
     public function handle(Request $request, Response $response, $next)
     {
         $route_info = $request->routes;

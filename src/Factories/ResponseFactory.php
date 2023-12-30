@@ -8,11 +8,19 @@ use WP_Error;
 
 /**
  * Class ResponseFactory
+ *
+ * The ResponseFactory class is responsible for creating response instances based on the given value.
  */
 class ResponseFactory
 {
+	/**
+	 * @var Container
+	 */
     protected $container;
 
+	/**
+	 * @param Container $container
+	 */
     public function __construct(Container $container)
     {
         $this->container = $container;
