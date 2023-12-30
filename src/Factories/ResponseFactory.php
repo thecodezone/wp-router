@@ -13,14 +13,14 @@ use WP_Error;
  */
 class ResponseFactory
 {
-	/**
-	 * @var Container
-	 */
+    /**
+     * @var Container
+     */
     protected $container;
 
-	/**
-	 * @param Container $container
-	 */
+    /**
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;

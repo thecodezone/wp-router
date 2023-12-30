@@ -3,9 +3,10 @@
 namespace CodeZone\Router\Middleware;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\Response;
 use function CodeZone\Router\container;
 
 /**
@@ -25,32 +26,32 @@ use function CodeZone\Router\container;
  */
 class Stack extends Collection
 {
-	/**
-	 * Runs the next middleware in the pipeline with the given request and response.
-	 *
-	 * @param $request The HTTP request object. If not provided, a new instance of the Request class will be created.
-	 * @param $response The HTTP response object. If not provided, a new instance of the Response class will be created.
-	 *
-	 * @return Response|null|string|Collection The result of class SetHeaders implements Middleware
-{
-
-    public function handle(Request $request, Response $response, $next)
-    {
-
-        foreach ($response->headers->all() as $key => $value) {
-            header($key . ': ' . $value[0]);
-        }
-
-        if (is_array($response->getContent())) {
-            header('Content-Type: application/json');
-        }
-
-        return $next($request, $response);
-    }
-}
-the next middleware in the pipeline.
-	 * @throws \Illuminate\Contracts\Container\BindingResolutionException If there is an error resolving the Request or Response class from the container.
-	 */
+    /**
+     * Runs the next middleware in the pipeline with the given request and response.
+     *
+     * @param $request The HTTP request object. If not provided, a new instance of the Request class will be created.
+     * @param $response The HTTP response object. If not provided, a new instance of the Response class will be created.
+     *
+     * @return Response|null|string|Collection The result of class SetHeaders implements Middleware
+     * {
+     *
+     * public function handle(Request $request, Response $response, $next)
+     * {
+     *
+     * foreach ($response->headers->all() as $key => $value) {
+     * header($key . ': ' . $value[0]);
+     * }
+     *
+     * if (is_array($response->getContent())) {
+     * header('Content-Type: application/json');
+     * }
+     *
+     * return $next($request, $response);
+     * }
+     * }
+     * the next middleware in the pipeline.
+     * @throws BindingResolutionException If there is an error resolving the Request or Response class from the container.
+     */
     public function run($request = null, $response = null): Response|null|string|Collection
     {
         return $this->next(
@@ -59,16 +60,16 @@ the next middleware in the pipeline.
         );
     }
 
-	/**
-	 * Calls the next middleware in the pipeline with the provided request and response objects.
-	 *
-	 * @param Request $request The HTTP request object.
-	 * @param Response $response The HTTP response object.
-	 *
-	 * @return mixed The result of the next middleware in the pipeline.
-	 * @throws Exception If the first middleware is not an instance of Middleware.
-	 * @throws \Illuminate\Contracts\Container\BindingResolutionException If there is an error resolving the middleware class from the container.
-	 */
+    /**
+     * Calls the next middleware in the pipeline with the provided request and response objects.
+     *
+     * @param Request $request The HTTP request object.
+     * @param Response $response The HTTP response object.
+     *
+     * @return mixed The result of the next middleware in the pipeline.
+     * @throws Exception If the first middleware is not an instance of Middleware.
+     * @throws BindingResolutionException If there is an error resolving the middleware class from the container.
+     */
     protected function next(Request $request, Response $response)
     {
         if ($this->isEmpty()) {
@@ -99,11 +100,11 @@ the next middleware in the pipeline.
         );
     }
 
-	/**
-	 * A callback method that returns a callable.
-	 *
-	 * @return callable A callable that takes in a Request object and a Response object as parameters and returns the result of the "next" method.
-	 */
+    /**
+     * A callback method that returns a callable.
+     *
+     * @return callable A callable that takes in a Request object and a Response object as parameters and returns the result of the "next" method.
+     */
     protected function callback(): callable
     {
         return function (Request $request, Response $response) {

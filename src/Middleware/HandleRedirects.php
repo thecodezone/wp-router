@@ -2,9 +2,9 @@
 
 namespace CodeZone\Router\Middleware;
 
+use CodeZone\Router\Factories\RedirectResponseFactory;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use function CodeZone\Router\is_json;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class RedirectMiddleware
@@ -15,13 +15,19 @@ use function CodeZone\Router\is_json;
  */
 class HandleRedirects implements Middleware
 {
+    protected $redirectResponesFactory;
+
+    public function __construct(RedirectResponseFactory $redirectResponseFactory)
+    {
+        $this->redirectResponesFactory = $redirectResponseFactory;
+    }
 
     /**
      * Handles the redirect.
      * If the response is a redirect, it will redirect the user to the URL specified in the response body.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Http\Response $response
+     * @param Request $request
+     * @param Response $response
      * @param $next
      *
      * @return mixed
@@ -29,37 +35,14 @@ class HandleRedirects implements Middleware
     public function handle(Request $request, Response $response, $next)
     {
         if ($response->getStatusCode() === 301 || $response->getStatusCode() === 302) {
-            if (is_string($response->getContent()) && ! is_json($response->getContent())) {
-                $url = filter_var($response->getContent(), FILTER_SANITIZE_URL);
-                $parsed = parse_url($url);
-                if (! isset($parsed['host']) && isset($parsed['path'])) {
-                    $path = $parsed['path'];
-                    if (preg_match('~^[a-zA-Z0-9/._-]*$~', $path)) {
-                        $this->redirect($parsed['path'], $response->getStatusCode());
-                    }
-                } else {
-                    if (filter_var($url, FILTER_VALIDATE_URL)) {
-                        $this->redirect($response->getContent(), $response->getStatusCode());
-                    }
-                }
+            if (get_class($response) === 'Illuminate\Http\RedirectResponse') {
+                $response = $this->redirectResponesFactory->make($response);
             }
+            $response->send();
+            $this->exit();
         }
 
         return $next($request, $response);
-    }
-
-    /**
-     * Redirects the user to the URL specified in the response body.
-     *
-     * @param $url
-     * @param $code
-     *
-     * @return void
-     */
-    public function redirect($to, $code): void
-    {
-        wp_redirect($to, $code);
-        $this->exit();
     }
 
     /**

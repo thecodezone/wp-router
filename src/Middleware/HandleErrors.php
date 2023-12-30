@@ -2,8 +2,9 @@
 
 namespace CodeZone\Router\Middleware;
 
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class HandleErrors
@@ -16,29 +17,25 @@ use Illuminate\Http\Response;
 class HandleErrors implements Middleware
 {
 
-	/**
-	 * Handle the request and response.
-	 *
-	 * @param Request $request The HTTP request object.
-	 * @param Response $response The HTTP response object.
-	 * @param callable $next The next middleware or request handler.
-	 *
-	 * @return mixed The result from the next middleware or request handler.
-	 * @throws \Exception If an error occurs during handling.
-	 */
+    /**
+     * Handle the request and response.
+     *
+     * @param Request $request The HTTP request object.
+     * @param Response $response The HTTP response object.
+     * @param callable $next The next middleware or request handler.
+     *
+     * @return mixed The result from the next middleware or request handler.
+     * @throws Exception If an error occurs during handling.
+     */
     public function handle(Request $request, Response $response, $next)
     {
-        $error_codes = apply_filters('codezone/router/error-codes', [
-            400 => 'Bad Request',
-            401 => 'Unauthorized',
-            403 => 'Forbidden',
-            404 => 'Not Found',
-            500 => 'Internal Server Error',
-            502 => 'Bad Gateway',
-            503 => 'Service Unavailable',
-            504 => 'Gateway Timeout',
-        ]);
-
+        $error_codes = apply_filters(
+            'codezone/router/error-codes',
+            array_filter(Response::$statusTexts, function ($code) {
+                return $code >= 400;
+            }, ARRAY_FILTER_USE_KEY)
+        );
+        
         if (array_key_exists($response->getStatusCode(), $error_codes)) {
             wp_die($error_codes[ $response->getStatusCode() ], $response->getStatusCode(), [
                 'response'  => $response->getContent(),
