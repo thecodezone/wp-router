@@ -3,7 +3,9 @@
 namespace CodeZone\Router\Factories;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use WP_Error;
 
 /**
@@ -30,12 +32,12 @@ class ResponseFactory
      * Create a new response instance from the given value.
      *
      * @param null $value
-     * @param \Illuminate\Http\Response|null $response
+     * @param Response|null $response
      *
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @return Response
+     * @throws BindingResolutionException
      */
-    public function make($value = null, Response|null $response = null): Response
+    public function make($value = null, BaseResponse|null $response = null): BaseResponse
     {
         return apply_filters('codezone/router/response', $this->mapResponse($value, $response));
     }
@@ -44,14 +46,14 @@ class ResponseFactory
      * Map the given value to a response.
      *
      * @param null $value
-     * @param \Illuminate\Http\Response|null $response
+     * @param Response|null $response
      *
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @return Response
+     * @throws BindingResolutionException
      */
-    private function mapResponse($value = null, Response|null $response = null): Response
+    private function mapResponse($value = null, BaseResponse|null $response = null): BaseResponse
     {
-        if ($value instanceof Response) {
+        if ($value instanceof BaseResponse) {
             return $value;
         }
 

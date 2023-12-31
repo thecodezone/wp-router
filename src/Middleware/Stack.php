@@ -5,8 +5,8 @@ namespace CodeZone\Router\Middleware;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\Response;
 use function CodeZone\Router\container;
 
 /**

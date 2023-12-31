@@ -5,7 +5,7 @@ namespace CodeZone\Router\Factories;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 class RedirectResponseFactory
 {
@@ -16,9 +16,13 @@ class RedirectResponseFactory
         $this->container = $container;
     }
 
-    public function make(string|Response $urlOrResponse, int $status = 302, iterable $headers = []): RedirectResponse
+    public function make(string|BaseResponse $urlOrResponse, int $status = 302, iterable $headers = []): RedirectResponse
     {
-        if ($urlOrResponse instanceof Response) {
+        if ($urlOrResponse instanceof RedirectResponse) {
+            return $urlOrResponse;
+        }
+
+        if ($urlOrResponse instanceof BaseResponse) {
             return $this->makeFromResponse($urlOrResponse);
         }
 
@@ -34,7 +38,7 @@ class RedirectResponseFactory
     /**
      * @throws BindingResolutionException
      */
-    public function makeFromResponse(Response $request): RedirectResponse
+    public function makeFromResponse(BaseResponse $request): RedirectResponse
     {
         $allowedStatuses = [ 301, 302, 303, 307, 308 ];
         $status          = in_array($request->getStatusCode(), $allowedStatuses) ? $request->getStatusCode() : 302;
