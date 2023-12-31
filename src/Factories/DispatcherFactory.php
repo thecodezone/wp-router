@@ -16,19 +16,19 @@ use function FastRoute\simpleDispatcher;
  *
  * @return BaseDispatcher An instance of the dispatcher.
  */
-class DispatcherFactory
+class DispatcherFactory implements Factory
 {
-	/**
-	 * Creates a new instance of the base dispatcher.
-	 *
-	 * @param callable $callback The callback function to be used by the dispatcher.
-	 * @param array $options [optional] Additional options for the dispatcher. Default is an empty array.
-	 *
-	 * @return BaseDispatcher An instance of the base dispatcher.
-	 */
-    public function make(callable $callback, $options = []) : BaseDispatcher
+    /**
+     * Creates a new instance of the base dispatcher.
+     *
+     * @param mixed $value The callback function to be used by the dispatcher.
+     * @param array $options [optional] Additional options for the dispatcher. Default is an empty array.
+     *
+     * @return BaseDispatcher An instance of the base dispatcher.
+     */
+    public function make(mixed $value = null, $options = []): BaseDispatcher
     {
-        return simpleDispatcher($callback, array_merge($options, [
+        return simpleDispatcher($value, array_merge($options, [
             'routeCollector' => Routes::class,
             'dataGenerator'  => Data::class,
             'dispatcher'     => Dispatcher::class,

@@ -5,11 +5,12 @@ namespace CodeZone\Router\Factories;
 use CodeZone\Router\Middleware\Middleware;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Str;
 
 /**
  * The MiddlewareFactory class is responsible for creating middleware instances.
  */
-class MiddlewareFactory
+class MiddlewareFactory implements Factory
 {
     /**
      * @var Container The object responsible for managing dependencies and creating instances of classes.
@@ -30,6 +31,35 @@ class MiddlewareFactory
         $this->container = $container;
     }
 
+    public function makeFromString(string $value): Middleware
+    {
+        $registered = apply_filters('codezone/router/middleware', []);
+        $signature  = Str::after($value, ':');
+        $value      = Str::before($value, ':');
+
+        if (isset($registered[ $value ])) {
+            $className = $registered[ $value ];
+        } else {
+            $className = $value;
+        }
+
+        // This filter allows you to add a custom condition resolver.
+        $condition = apply_filters('codezone/router/middleware/factory', null, $value, $className, $signature);
+        if ($condition) {
+            return $condition;
+        }
+
+        // Or you can add a custom condition factory to resolve the middleware.
+        // It should implement the Conditions\Middleware.
+        $factories = apply_filters('codezone/router/middleware/factories', $this->factories);
+        $factory   = $factories[ $className ] ?? null;
+        if ($factory) {
+            return $this->container->make($factory)->make($signature);
+        }
+
+        return $this->container->makeWith($className);
+    }
+
     /**
      * make method.
      *
@@ -40,17 +70,12 @@ class MiddlewareFactory
      * @return Middleware The resolved Middleware instance.
      * @throws BindingResolutionException
      */
-    public function make($value): Middleware
+    public function make($value = null, $options = []): Middleware
     {
         if (is_object($value) && $value instanceof Middleware) {
             return $value;
         }
 
-        $registered = apply_filters('codezone/router/middleware', []);
-        if (isset($registered[ $value ])) {
-            $value = $registered[ $value ];
-        }
-
-        return $this->container->make($value);
+        return $this->makeFromString($value);
     }
 }

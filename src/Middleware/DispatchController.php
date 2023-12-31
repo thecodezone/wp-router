@@ -76,7 +76,9 @@ class DispatchController implements Middleware
                 $request,
                 $response,
             ]),
-            $response_before_controller
+            [
+                'response' => $response_before_controller
+            ]
         );
 
         return $next($request, $response);

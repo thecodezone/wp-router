@@ -7,7 +7,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
-class RedirectResponseFactory
+class RedirectResponseFactory implements Factory
 {
     protected $container;
 
@@ -16,17 +16,20 @@ class RedirectResponseFactory
         $this->container = $container;
     }
 
-    public function make(string|BaseResponse $urlOrResponse, int $status = 302, iterable $headers = []): RedirectResponse
+    public function make(mixed $value = null, iterable $options = []): RedirectResponse
     {
-        if ($urlOrResponse instanceof RedirectResponse) {
-            return $urlOrResponse;
+        $status  = $options['status'] ?? 302;
+        $headers = $options['headers'] ?? [];
+
+        if ($value instanceof RedirectResponse) {
+            return $value;
         }
 
-        if ($urlOrResponse instanceof BaseResponse) {
-            return $this->makeFromResponse($urlOrResponse);
+        if ($value instanceof BaseResponse) {
+            return $this->makeFromResponse($value);
         }
 
-        $url = $urlOrResponse;
+        $url = $value;
 
         return $this->container->makeWith(RedirectResponse::class, [
             'url'     => $url,

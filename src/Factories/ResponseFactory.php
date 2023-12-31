@@ -13,7 +13,7 @@ use WP_Error;
  *
  * The ResponseFactory class is responsible for creating response instances based on the given value.
  */
-class ResponseFactory
+class ResponseFactory implements Factory
 {
     /**
      * @var Container
@@ -37,8 +37,10 @@ class ResponseFactory
      * @return Response
      * @throws BindingResolutionException
      */
-    public function make($value = null, BaseResponse|null $response = null): BaseResponse
+    public function make(mixed $value = null, iterable $options = []): BaseResponse
     {
+        $response = $options['response'] ?? null;
+
         return apply_filters('codezone/router/response', $this->mapResponse($value, $response));
     }
 
