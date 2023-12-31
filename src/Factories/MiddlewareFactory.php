@@ -2,7 +2,9 @@
 
 namespace CodeZone\Router\Factories;
 
+use CodeZone\Router\Factories\Middleware\UserHasCapFactory;
 use CodeZone\Router\Middleware\Middleware;
+use CodeZone\Router\Middleware\UserHasCap;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Str;
@@ -16,6 +18,10 @@ class MiddlewareFactory implements Factory
      * @var Container The object responsible for managing dependencies and creating instances of classes.
      */
     protected Container $container;
+
+    protected array $factories = [
+        UserHasCap::class => UserHasCapFactory::class
+    ];
 
     /**
      * __construct method.
