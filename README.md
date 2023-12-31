@@ -1,14 +1,18 @@
 # CodeZone Router
 
-This package contains a simple routing system implementation that works with Roots-based WordPress plugins or sites, or any WordPress projects that utilize container.
+This package contains a simple routing system implementation that works with Roots-based WordPress plugins or sites, or
+any WordPress projects that utilize container.
 
-The router uses the FastRoute dispatching library and integrates with the `Illuminate\Container\Container` class from the Laravel framework for managing dependencies.
+The router uses the FastRoute dispatching library and integrates with the `Illuminate\Container\Container` class from
+the Laravel framework for managing dependencies.
 
 ## Links
 
 - [Sage](https://roots.io/): The modern WordPress starter theme with a development workflow.
-- [FastRoute](https://github.com/nikic/FastRoute): A fast request router for PHP that is highly flexible and reverse routing compatible.
-- [Illuminate Container](https://github.com/illuminate/container): The Illuminate Container package is used to manage class dependencies and perform dependency injection, part of the Laravel framework.
+- [FastRoute](https://github.com/nikic/FastRoute): A fast request router for PHP that is highly flexible and reverse
+  routing compatible.
+- [Illuminate Container](https://github.com/illuminate/container): The Illuminate Container package is used to manage
+  class dependencies and perform dependency injection, part of the Laravel framework.
 
 ## Usage
 
@@ -20,13 +24,15 @@ use CodeZone\Router\Router;
 
 ### Registering the Router
 
-You first have to register the router with a container. This  can be done inside of a service provider or a plugin's main file.
+You first have to register the router with a container. This can be done inside of a service provider or a plugin's main
+file.
 
 ```php
 $router = Router::register($configArray);
 ```
 
-In this example, `$configArray` is an array that must contain a `'container'` key with an instance of `Illuminate\Container\Container` as a value:
+In this example, `$configArray` is an array that must contain a `'container'` key with an instance
+of `Illuminate\Container\Container` as a value:
 
 ```php
 $configArray = [
@@ -50,10 +56,10 @@ $dispatcher = $router->routes(function (Routes $r) {
 });
 ```
 
-
 ### Route Parameters
 
-Route parameters provide dynamic segments in routing paths and allow paths to contain variable parts. This package uses FastRoute syntax for defining route parameters.
+Route parameters provide dynamic segments in routing paths and allow paths to contain variable parts. This package uses
+FastRoute syntax for defining route parameters.
 
 Here's an example of a route with a parameter:
 
@@ -61,15 +67,19 @@ Here's an example of a route with a parameter:
     $r->get('/user/{id}', 'Plugin\Controllers\UserController@show');
 ```
 
-In this case, `{id}` is a route parameter. When matching routes, FastRoute uses these parameters to capture parts of the path, which allows for flexible routing strategies.
+In this case, `{id}` is a route parameter. When matching routes, FastRoute uses these parameters to capture parts of the
+path, which allows for flexible routing strategies.
 
 You can read more about route parameters in the [FastRoute documentation](https://github.com/nikic/FastRoute).
 
 ### Conditionals
 
-In this routing system, you can define conditional routes using `$r->condition(conditionClass, callback)`. The `conditionClass` must be a class that implements a `test()` method returning a boolean. The callback is only executed if the `test()` method returns `true`.
+In this routing system, you can define conditional routes using `$r->condition(conditionClass, callback)`.
+The `conditionClass` must be a class that implements a `test()` method returning a boolean. The callback is only
+executed if the `test()` method returns `true`.
 
-Here is an example, where `IsFrontendPath` is a class that defines a condition for checking if the current request is not directed at an admin page:
+Here is an example, where `IsFrontendPath` is a class that defines a condition for checking if the current request is
+not directed at an admin page:
 
 ```php
 namespace CodeZone\Router\Conditions;
@@ -89,13 +99,32 @@ $r->condition(IsFrontendPath::class, function($r){
 });
 ```
 
-In this scenario, a GET request to '/my-route' is handled by the `'MyController'` handler only if the `IsFrontendPath` condition is met, that is, only if the request is not an admin request.
+You may also use the `codezone/router/conditions` action to add named conditions:
+
+```php
+add_action('codezone/router/conditions', function($conditions) {
+    $conditions['isFrontend'] = IsFrontendPath::class;
+});
+```
+
+This allows for more reader-friendly route condition definitions:
+
+```php
+$r->condition('isFrontend', function($r){
+    $r->get('/my-route', 'MyController');
+});
+```
+
+In this scenario, a GET request to '/my-route' is handled by the `'MyController'` handler only if the `IsFrontendPath`
+condition is met, that is, only if the request is not an admin request.
 
 ### Middleware
 
-Middleware in this routing system provides a set of "layers" through which a request must pass before it reaches your application handlers, and through which the response must pass on the way back.
+Middleware in this routing system provides a set of "layers" through which a request must pass before it reaches your
+application handlers, and through which the response must pass on the way back.
 
-Middleware can be used to modify the HTTP request or response, for instance, or to run code before or after the request handling.
+Middleware can be used to modify the HTTP request or response, for instance, or to run code before or after the request
+handling.
 
 An example of middleware usage is a `LoggedIn` class, which checks if a user is logged in:
 
@@ -119,13 +148,16 @@ class LoggedIn implements Middleware {
 }
 ```
 
-In this example, if the user is not logged in, the middleware sets the response status to 302 and redirects the user to the login page. Otherwise, it continues the middleware stack to the next middleware.
+In this example, if the user is not logged in, the middleware sets the response status to 302 and redirects the user to
+the login page. Otherwise, it continues the middleware stack to the next middleware.
 
 #### Global Middleware
 
-Global middleware is applied to all routes and is registered by adding Middleware to a `Stack`, which extends Laravel collections.
+Global middleware is applied to all routes and is registered by adding Middleware to a `Stack`, which extends Laravel
+collections.
 
-Creating a new stack is done by passing an array of middleware class names to the `Stack` constructor. The following stack will process the entire request / response lifecycle of your theme or plugin.
+Creating a new stack is done by passing an array of middleware class names to the `Stack` constructor. The following
+stack will process the entire request / response lifecycle of your theme or plugin.
 
 ```php
 use CodeZone\Router\Middleware\DispatchController;
@@ -150,11 +182,15 @@ $stack = container()->makeWith(Stack::class, $middleware);
 $stack->run();
 ```
 
-Once you have a Stack instance, you can push middleware classes onto it, to create a stack (or pipeline) of middleware that your application will run through. The request will move through the stack in the order that middleware is added. The added middleware wrap around your application handling, allowing them to interact with the request before and after the application does.
+Once you have a Stack instance, you can push middleware classes onto it, to create a stack (or pipeline) of middleware
+that your application will run through. The request will move through the stack in the order that middleware is added.
+The added middleware wrap around your application handling, allowing them to interact with the request before and after
+the application does.
 
 #### Route Middleware
 
-In addition to global middleware that runs for every route, you can define middleware that runs only for specific routes.
+In addition to global middleware that runs for every route, you can define middleware that runs only for specific
+routes.
 
 You can apply route middleware by chaining the `->middleware()` method after defining a route:
 
@@ -182,12 +218,37 @@ $r->get('/my-route', 'MyController')->middleware([MiddlewareOne::class, Middlewa
 
 In this example, `Middleware::class` is applied to just the `/my-route` route.
 
-These methods allow you to specify middleware that should only be executed for certain routes. This gives you more fine-grained control over when different middleware should be used in your plugin.
+These methods allow you to specify middleware that should only be executed for certain routes. This gives you more
+fine-grained control over when different middleware should be used in your plugin.
+
+#### Named Middleware
+
+You may also use the `codezone/router/middleware` action to add named middleware:
+
+```php
+add_action('codezone/router/middleware', function($middleware) {
+    $middleware['auth'] = AuthMiddleware::class;
+});
+```
+
+This allows for more reader-friendly route middleware definitions:
+
+```php
+$r->get('/my-route', 'MyController', ['middleware' => 'auth']);
+```
+
+or
+
+```php
+$r->middleware('auth', function($r){
+    $r->get('/my-route', 'MyController');
+});
+```
 
 ## WordPress Hooks
 
-This package uses the `apply_filters` function to give you control over certain functionalities. Below are the hooks you can use along with their descriptions.
-
+This package uses the `apply_filters` function to give you control over certain functionalities. Below are the hooks you
+can use along with their descriptions.
 
 ### 'codezone/router/response' filter
 
@@ -212,7 +273,8 @@ add_filter('codezone/router/error-codes', function($error_codes) {
 
 ### 'codezone/router/routable_params' filter
 
-This filter allows you to modify the routable parameters in the router. These parameters are considered part of the route's path instead of only being passed to the `Request` object.
+This filter allows you to modify the routable parameters in the router. These parameters are considered part of the
+route's path instead of only being passed to the `Request` object.
 
 ```php
     add_filter('codezone/router/routable_params', function($params) {
@@ -257,7 +319,8 @@ add_filter('codezone/router/matched_routes', function($matchedRoutes) {
 
 ### 'codezone/router/render' action
 
-An action to render the response. This action is called after the router has matched a route and before the response is sent to the browser.
+An action to render the response. This action is called after the router has matched a route and before the response is
+sent to the browser.
 
 ```php
 add_action('codezone/router/render', function($response) {
@@ -267,10 +330,31 @@ add_action('codezone/router/render', function($response) {
 
 ### 'codezone/router/render/json' action
 
-An action to render the response as JSON. This action is called after the router has matched a route and before the response is sent to the browser.
+An action to render the response as JSON. This action is called after the router has matched a route and before the
+response is sent to the browser.
 
 ```php
 add_action('codezone/router/render/json', function($response) {
     echo json_encode($response->getContent());
+});
+```
+
+### 'codezone/router/middleware' action
+
+An action for adding named middleware. Allows for more reader-friendly route middleware definitions.
+
+```php
+add_action('codezone/router/middleware', function($middleware) {
+    $middleware['auth'] = AuthMiddleware::class;
+});
+```
+
+### 'codezone/router/conditions' action
+
+An action for adding named conditions. Allows for more reader-friendly route condition definitions.
+
+```php
+add_action('codezone/router/conditions', function($conditions) {
+    $conditions['isFrontend'] = IsFrontendPath::class;
 });
 ```
