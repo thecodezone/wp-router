@@ -9,30 +9,30 @@ namespace CodeZone\Router\Conditions;
 class CallbackCondition implements Condition
 {
 
-	/**
-	 * Holds a reference to a callback function or method.
-	 *
-	 * @var callable
-	 */
+    /**
+     * Holds a reference to a callback function or method.
+     *
+     * @var callable
+     */
     protected $callback;
 
-	/**
-	 * Class constructor.
-	 *
-	 * @param callable $callback The callback function to be assigned.
-	 *
-	 * @return void
-	 */
+    /**
+     * Class constructor.
+     *
+     * @param callable $callback The callback function to be assigned.
+     *
+     * @return void
+     */
     public function __construct(callable $callback)
     {
         $this->callback = $callback;
     }
 
-	/**
-	 * Executes the callback function and returns the result.
-	 *
-	 * @return bool The result of executing the callback function.
-	 */
+    /**
+     * Executes the callback function and returns the result.
+     *
+     * @return bool The result of executing the callback function.
+     */
     public function test(): bool
     {
         $callback = $this->callback;
