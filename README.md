@@ -252,9 +252,20 @@ requires a parameter, you can use a factory to parse the parameter from the midd
 middleware constructor.
 
 ```php
-add_filter('codezone/router/middleware/factory', function($instanceOrNull, $key, $className, $signature) {
-    $params = explode(':', $signature);
-    return container->makeWith($className, ['params' => $params]);
+add_filter('codezone/router/conditions/factory', function(Condition|null $instanceOrNull, array $attributes = []) {
+    //Check if this is our named condition
+    if ($name !== 'can') {
+        return $instanceOrNull;
+    }
+    
+    $className = $attributes['className'] ?? null;
+    $name = $attributes['name'] ?? null;
+    $signature = $attributes['signature'] ?? null;
+    
+    //The signature is the part of the route name after the ":". We need to break it into an array.
+    $params = explode(',', $signature);
+    
+    return container->makeWith(HasCap::class, ['params' => $params]);
 });
 ```
 
@@ -392,9 +403,20 @@ A filter for manually handling the instantiation of named conditions. Use this f
 to parse the condition signature and pass extra parameters to the condition constructor.
 
 ```php
-add_filter('codezone/router/conditions/factory', function($instanceOrNull, $key, $className, $signature) {
-    $params = explode(':', $signature);
-    return container->makeWith($className, ['params' => $params]);
+add_filter('codezone/router/conditions/factory', function(Condition|null $instanceOrNull, array $attributes = []) {
+    //Check if this is our named condition
+    if ($name !== 'can') {
+        return $instanceOrNull;
+    }
+    
+    $className = $attributes['className'] ?? null;
+    $name = $attributes['name'] ?? null;
+    $signature = $attributes['signature'] ?? null;
+    
+    //The signature is the part of the route name after the ":". We need to break it into an array.
+    $params = explode(',', $signature);
+    
+    return container->makeWith(HasCap::class, ['params' => $params]);
 });
 ```
 
@@ -404,9 +426,20 @@ As an alternative to using the filter above, you may also implement the `Factory
 condition factory.
 
 ```php
-add_filter('codezone/router/conditions/factories', function($factories) {
-    $factories[HasCap::class] = HasCapFactory::class;
-    return $factories;
+add_filter('codezone/router/conditions/factory', function(Condition|null $instanceOrNull, array $attributes = []) {
+    //Check if this is our named condition
+    if ($name !== 'can') {
+        return $instanceOrNull;
+    }
+    
+    $className = $attributes['className'] ?? null;
+    $name = $attributes['name'] ?? null;
+    $signature = $attributes['signature'] ?? null;
+    
+    //The signature is the part of the route name after the ":". We need to break it into an array.
+    $params = explode(',', $signature);
+    
+    return container->makeWith(HasCap::class, ['params' => $params]);
 });
 ```
 
@@ -416,9 +449,20 @@ A filter for manually handling the instantiation of named middleware. Use this f
 to parse the middleware signature and pass extra parameters to the middleware constructor.
 
 ```php
-add_filter('codezone/router/middleware/factory', function($instanceOrNull, $key, $className, $signature) {
-    $params = explode(':', $signature);
-    return container->makeWith($className, ['params' => $params]);
+add_filter('codezone/router/middleware/factory', function(Middleware|null $instanceOrNull, array $attributes = []) {
+    //Check if this is our named middleware
+    if ($name !== 'can') {
+        return $instanceOrNull;
+    }
+    
+    $className = $attributes['className'] ?? null;
+    $name = $attributes['name'] ?? null;
+    $signature = $attributes['signature'] ?? null;
+    
+    //The signature is the part of the route name after the ":". We need to break it into an array.
+    $params = explode(',', $signature);
+    
+    return container->makeWith(UserHasCap::class, ['params' => $params]);
 });
 ```
 

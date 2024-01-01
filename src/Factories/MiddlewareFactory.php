@@ -37,23 +37,36 @@ class MiddlewareFactory implements Factory
         $this->container = $container;
     }
 
-    public function makeFromString(string $value): Middleware
+
+    /**
+     * Makes a middleware instance from a string representation.
+     *
+     * @param string $string The string representation of the middleware.
+     *
+     * @return Middleware The middleware instance.
+     * @throws BindingResolutionException
+     */
+    public function makeFromString(string $string): Middleware
     {
         $registered = $this->getRegisteredMiddleware();
-        $signature  = Str::after($value, ':');
-        $value      = Str::before($value, ':');
+        $signature  = Str::after($string, ':');
+        $name       = Str::before($string, ':');
 
-        if (isset($registered[ $value ])) {
-            $className = $registered[ $value ];
+        if (isset($registered[ $name ])) {
+            $className = $registered[ $name ];
         } else {
-            $className = $value;
+            $className = $name;
         }
 
         // This filter allows you to add a custom condition resolver.
-        $condition = apply_filters('codezone/router/middleware/factory', null, $value, $className, $signature);
+        $middleware = apply_filters('codezone/router/middleware/factory', null, [
+            'className' => $className,
+            'name'      => $name,
+            'signature' => $signature
+        ]);
 
-        if ($condition) {
-            return $condition;
+        if ($middleware) {
+            return $middleware;
         }
 
         // Or you can add a custom condition factory to resolve the middleware.

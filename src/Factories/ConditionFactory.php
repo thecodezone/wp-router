@@ -83,25 +83,29 @@ class ConditionFactory implements Factory
     /**
      * Makes a condition object based on the given value.
      *
-     * @param mixed $value The value used to determine the condition object.
+     * @param mixed $name The value used to determine the condition object.
      *
-     * @return \Condition The condition object.
+     * @return Condition The condition object.
      * @throws BindingResolutionException
      */
-    public function makeFromString(string $value): Condition
+    public function makeFromString(string $string): Condition
     {
         $registered = $this->getRegisteredConditions();
-        $signature  = Str::after($value, ':');
-        $value      = Str::before($value, ':');
+        $signature  = Str::after($string, ':');
+        $name       = Str::before($string, ':');
 
-        if (isset($registered[ $value ])) {
-            $className = $registered[ $value ];
+        if (isset($registered[ $name ])) {
+            $className = $registered[ $name ];
         } else {
-            $className = $value;
+            $className = $name;
         }
 
         // This filter allows you to add a custom condition resolver.
-        $condition = apply_filters('codezone/router/conditions/factory', null, $value, $className, $signature);
+        $condition = apply_filters('codezone/router/conditions/factory', null, [
+            'className' => $className,
+            'name'      => $name,
+            'signature' => $signature
+        ]);
         if ($condition) {
             return $condition;
         }
