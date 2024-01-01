@@ -21,7 +21,7 @@ class ConditionFactory implements Factory
      * @var Container $container The global container object that
      * holds instances of classes and provides dependency injection.
      */
-    protected Container $container;
+    public Container $container;
 
     protected array $factories = [
         HasCap::class => HasCapFactory::class
@@ -90,7 +90,7 @@ class ConditionFactory implements Factory
      */
     public function makeFromString(string $value): Condition
     {
-        $registered = apply_filters('codezone/router/conditions', []);
+        $registered = $this->getRegisteredConditions();
         $signature  = Str::after($value, ':');
         $value      = Str::before($value, ':');
 
@@ -115,5 +115,18 @@ class ConditionFactory implements Factory
         }
 
         return $this->container->makeWith($className);
+    }
+
+    /**
+     * Retrieves the registered conditions.
+     *
+     * This method returns an array of the registered conditions by applying the 'codezone/router/conditions'
+     * filter to get the conditions from the filter hook. The returned array contains all the registered conditions.
+     *
+     * @return array An array of the registered conditions.
+     */
+    public function getRegisteredConditions(): array
+    {
+        return apply_filters('codezone/router/conditions', []);
     }
 }

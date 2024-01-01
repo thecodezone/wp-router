@@ -22,7 +22,7 @@ class UserHasCap implements Middleware
      * The variable that holds the capabilities of the system.
      * It can either be a string or an iterable data structure.
      */
-    protected string|iterable $capabilities = '';
+    public iterable $capabilities = [];
 
     /**
      * @var string|null $redirect_to
@@ -43,7 +43,7 @@ class UserHasCap implements Middleware
      */
     public function __construct(string|iterable $capabilities, string|null $redirect_to = null)
     {
-        $this->capabilities = $capabilities;
+        $this->capabilities = is_string($capabilities) ? explode(',', $capabilities) : $capabilities;
         $this->redirect_to  = $redirect_to;
     }
 

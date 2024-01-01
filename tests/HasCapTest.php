@@ -3,6 +3,10 @@
 namespace Tests;
 
 use CodeZone\Router\Conditions\HasCap;
+use CodeZone\Router\Factories\ConditionFactory;
+use CodeZone\Router\Factories\Conditions\HasCapFactory;
+use CodeZone\Router\Factories\Middleware\UserHasCapFactory;
+use CodeZone\Router\Factories\MiddlewareFactory;
 use CodeZone\Router\Middleware\UserHasCap;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
@@ -159,5 +163,51 @@ class HasCapTest extends TestCase
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals(302, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function condition_can_be_registered_via_string()
+    {
+        $container = new Container();
+        $this->router($container);
+        $mockUser          = $this->createMock('WP_User');
+        $hasCapFactoryMock = $this->createPartialMock(HasCapFactory::class, [ 'getCurrentUser' ]);
+        $hasCapFactoryMock->expects($this->once())->method('getCurrentUser')->willReturn($mockUser);
+        $hasCapFactoryMock->container = $container;
+        $container->bind(HasCapFactory::class, function () use ($hasCapFactoryMock) {
+            return $hasCapFactoryMock;
+        });
+        $mock            = $this->createPartialMock(ConditionFactory::class, [ 'getRegisteredConditions' ]);
+        $mock->container = $container;
+        $mock->expects($this->once())->method('getRegisteredConditions')->willReturn([ 'can' => HasCap::class ]);
+        $condition = $mock->make('can:edit_posts,create_posts');
+        $this->assertInstanceOf(HasCap::class, $condition);
+        $this->assertTrue(in_array('edit_posts', $condition->capabilities));
+        $this->assertTrue(in_array('create_posts', $condition->capabilities));
+    }
+
+    /**
+     * @test
+     */
+    public function middleware_can_be_registered_via_string()
+    {
+        $container = new Container();
+        $this->router($container);
+        $mockUser          = $this->createMock('WP_User');
+        $hasCapFactoryMock = $this->createPartialMock(UserHasCapFactory::class, [ 'getCurrentUser' ]);
+        $hasCapFactoryMock->expects($this->once())->method('getCurrentUser')->willReturn($mockUser);
+        $hasCapFactoryMock->container = $container;
+        $container->bind(UserHasCapFactory::class, function () use ($hasCapFactoryMock) {
+            return $hasCapFactoryMock;
+        });
+        $mock            = $this->createPartialMock(MiddlewareFactory::class, [ 'getRegisteredMiddleware' ]);
+        $mock->container = $container;
+        $mock->expects($this->once())->method('getRegisteredMiddleware')->willReturn([ 'can' => UserHasCap::class ]);
+        $middleware = $mock->make('can:edit_posts,create_posts');
+        $this->assertInstanceOf(UserHasCap::class, $middleware);
+        $this->assertTrue(in_array('edit_posts', $middleware->capabilities));
+        $this->assertTrue(in_array('create_posts', $middleware->capabilities));
     }
 }

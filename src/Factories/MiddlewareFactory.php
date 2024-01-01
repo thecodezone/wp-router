@@ -17,7 +17,7 @@ class MiddlewareFactory implements Factory
     /**
      * @var Container The object responsible for managing dependencies and creating instances of classes.
      */
-    protected Container $container;
+    public Container $container;
 
     protected array $factories = [
         UserHasCap::class => UserHasCapFactory::class
@@ -39,7 +39,7 @@ class MiddlewareFactory implements Factory
 
     public function makeFromString(string $value): Middleware
     {
-        $registered = apply_filters('codezone/router/middleware', []);
+        $registered = $this->getRegisteredMiddleware();
         $signature  = Str::after($value, ':');
         $value      = Str::before($value, ':');
 
@@ -51,6 +51,7 @@ class MiddlewareFactory implements Factory
 
         // This filter allows you to add a custom condition resolver.
         $condition = apply_filters('codezone/router/middleware/factory', null, $value, $className, $signature);
+
         if ($condition) {
             return $condition;
         }
@@ -59,11 +60,25 @@ class MiddlewareFactory implements Factory
         // It should implement the Conditions\Middleware.
         $factories = apply_filters('codezone/router/middleware/factories', $this->factories);
         $factory   = $factories[ $className ] ?? null;
+
         if ($factory) {
-            return $this->container->make($factory)->make($signature);
+            return $this->container->makeWith($factory)->make($signature);
         }
 
         return $this->container->makeWith($className);
+    }
+
+    /**
+     * Retrieves the registered middleware.
+     *
+     * This method returns an array of the registered conditions by applying the 'codezone/router/middleware'
+     * filter to get the conditions from the filter hook. The returned array contains all the registered middleware.
+     *
+     * @return array An array of the registered middleware.
+     */
+    public function getRegisteredMiddleware(): array
+    {
+        return apply_filters('codezone/router/middleware', []);
     }
 
     /**

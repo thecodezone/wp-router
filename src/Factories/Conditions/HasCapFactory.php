@@ -5,18 +5,26 @@ namespace CodeZone\Router\Factories\Conditions;
 use CodeZone\Router\Conditions\Condition;
 use CodeZone\Router\Conditions\HasCap;
 use CodeZone\Router\Factories\Factory;
+use Illuminate\Container\Container;
 use WP_User;
 
+/**
+ * Class HasCapFactory
+ *
+ * The HasCapFactory class is responsible for creating instances of the HasCap condition.
+ *
+ * @implements Factory
+ */
 class HasCapFactory implements Factory
 {
-    protected $container;
+    public $container;
 
     /**
      * HasCapFactory constructor.
      *
      * @param $container
      */
-    public function __construct($container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }
@@ -29,7 +37,7 @@ class HasCapFactory implements Factory
      *
      * @return Condition
      */
-    public function make($value, $options = []): Condition
+    public function make(mixed $value = null, iterable $options = []): Condition
     {
         if ($value instanceof Condition) {
             return $value;
@@ -43,10 +51,9 @@ class HasCapFactory implements Factory
             $capabilities = $value;
         }
 
-        if (! is_string($value)) {
+        if (is_string($value)) {
             $capabilities = explode(',', $value);
         }
-
 
         return $this->container->makeWith(HasCap::class, [
             'capabilities' => $capabilities,

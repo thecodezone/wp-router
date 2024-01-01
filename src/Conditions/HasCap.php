@@ -15,13 +15,13 @@ use function collect;
 class HasCap implements Condition
 {
     /**
+     * @var array
+     */
+    public array $capabilities = [];
+    /**
      * @var WP_User
      */
     protected WP_User $user;
-    /**
-     * @var array
-     */
-    protected array $capabilities = [];
 
     /**
      * Constructs a new instance of the class.

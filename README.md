@@ -245,6 +245,33 @@ $r->middleware('auth', function($r){
 });
 ```
 
+##### Named middleware parameters
+
+You may use middleware factories to parse named middleware parameters. For example, if you have a middleware class that
+requires a parameter, you can use a factory to parse the parameter from the middleware signature and pass it to the
+middleware constructor.
+
+```php
+add_filter('codezone/router/middleware/factory', function($instanceOrNull, $key, $className, $signature) {
+    $params = explode(':', $signature);
+    return container->makeWith($className, ['params' => $params]);
+});
+```
+
+In this example, the middleware signature is `auth:admin`, and the middleware factory parses the `admin` parameter and
+passes it to the middleware constructor.
+
+##### HasCap Middleware
+
+This package includes a `UserHasCap` middleware class that checks if the current user has a specific capability. You can
+use this middleware to restrict access to certain routes.
+
+Assuming you register the named middleware as `['can' => UserHasCap::class]`, you can use it like this:
+
+```php
+$r->get('/my-route', 'MyController', ['middleware' => 'hasCap:manage_options,edit_posts']);
+```
+
 ## WordPress Hooks
 
 This package uses the `apply_filters` function to give you control over certain functionalities. Below are the hooks you
@@ -358,3 +385,53 @@ add_action('codezone/router/conditions', function($conditions) {
     $conditions['isFrontend'] = IsFrontendPath::class;
 });
 ```
+
+### 'codezone/router/conditions/factory' filter
+
+A filter for manually handling the instantiation of named conditions. Use this filter if you need to pass extra
+to parse the condition signature and pass extra parameters to the condition constructor.
+
+```php
+add_filter('codezone/router/conditions/factory', function($instanceOrNull, $key, $className, $signature) {
+    $params = explode(':', $signature);
+    return container->makeWith($className, ['params' => $params]);
+});
+```
+
+### 'codezone/router/conditions/factories' filter
+
+As an alternative to using the filter above, you may also implement the `Factory` interface to register a
+condition factory.
+
+```php
+add_filter('codezone/router/conditions/factories', function($factories) {
+    $factories[HasCap::class] = HasCapFactory::class;
+    return $factories;
+});
+```
+
+### 'codezone/router/middleware/factory' filter
+
+A filter for manually handling the instantiation of named middleware. Use this filter if you need to pass extra
+to parse the middleware signature and pass extra parameters to the middleware constructor.
+
+```php
+add_filter('codezone/router/middleware/factory', function($instanceOrNull, $key, $className, $signature) {
+    $params = explode(':', $signature);
+    return container->makeWith($className, ['params' => $params]);
+});
+```
+
+### 'codezone/router/middleware/factories' filter
+
+As an alternative to using the filter above, you may also implement the `Factory` interface to register a
+middleware factory.
+
+```php
+add_filter('codezone/router/conditions/factories', function($factories) {
+    $factories[UserHasCap::class] = UserHasCapFactory::class;
+    return $factories;
+});
+```
+
+

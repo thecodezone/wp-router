@@ -5,10 +5,29 @@ namespace CodeZone\Router\Factories\Middleware;
 use CodeZone\Router\Factories\Factory;
 use CodeZone\Router\Middleware\Middleware;
 use CodeZone\Router\Middleware\UserHasCap;
+use Illuminate\Container\Container;
 use WP_User;
 
+/**
+ * Class UserHasCapFactory
+ *
+ * This class is responsible for creating instances of the UserHasCap middleware.
+ * It implements the Factory interface.
+ */
 class UserHasCapFactory implements Factory
 {
+    /**
+     * @var Container $container The container instance.
+     */
+    public Container $container;
+
+    /**
+     * @param Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Make a new UserHasCap middleware instance.
@@ -18,7 +37,7 @@ class UserHasCapFactory implements Factory
      *
      * @return Middleware
      */
-    public function make(mixed $value, iterable $options = [])
+    public function make(mixed $value = null, iterable $options = [])
     {
         if ($value instanceof Middleware) {
             return $value;
@@ -31,7 +50,7 @@ class UserHasCapFactory implements Factory
             $capabilities = $value;
         }
 
-        if (! is_string($value)) {
+        if (is_string($value)) {
             $capabilities = explode(',', $value);
         }
 
