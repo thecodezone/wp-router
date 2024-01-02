@@ -245,33 +245,6 @@ $r->middleware('auth', function($r){
 });
 ```
 
-##### Named middleware parameters
-
-You may use middleware factories to parse named middleware parameters. For example, if you have a middleware class that
-requires a parameter, you can use a factory to parse the parameter from the middleware signature and pass it to the
-middleware constructor.
-
-```php
-add_filter('codezone/router/conditions/factory', function(Condition|null $instanceOrNull, array $attributes = []) {
-    //Check if this is our named condition
-    if ($name !== 'can') {
-        return $instanceOrNull;
-    }
-    
-    $className = $attributes['className'] ?? null;
-    $name = $attributes['name'] ?? null;
-    $signature = $attributes['signature'] ?? null;
-    
-    //The signature is the part of the route name after the ":". We need to break it into an array.
-    $params = explode(',', $signature);
-    
-    return container->makeWith(HasCap::class, ['params' => $params]);
-});
-```
-
-In this example, the middleware signature is `auth:admin`, and the middleware factory parses the `admin` parameter and
-passes it to the middleware constructor.
-
 ##### HasCap Middleware
 
 This package includes a `UserHasCap` middleware class that checks if the current user has a specific capability. You can
