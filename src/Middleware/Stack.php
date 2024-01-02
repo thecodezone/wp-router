@@ -6,8 +6,9 @@ use CodeZone\Router\Factories\MiddlewareFactory;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use function CodeZone\Router\container;
 
 /**
@@ -54,7 +55,7 @@ class Stack extends Collection
      * @throws BindingResolutionException If there is an error resolving the Request
      *                                    or Response class from the container.
      */
-    public function run($request = null, $response = null): Response|null|string|Collection
+    public function run($request = null, $response = null): BaseResponse|null|string|Collection
     {
         return $this->next(
             $request ? $request : container()->make(Request::class),
@@ -72,7 +73,7 @@ class Stack extends Collection
      * @throws Exception If the first middleware is not an instance of Middleware.
      * @throws BindingResolutionException If there is an error resolving the middleware class from the container.
      */
-    protected function next(Request $request, Response $response)
+    protected function next(Request $request, BaseResponse $response)
     {
         if ($this->isEmpty()) {
             return $request;
@@ -109,7 +110,7 @@ class Stack extends Collection
      */
     protected function callback(): callable
     {
-        return function (Request $request, Response $response) {
+        return function (Request $request, BaseResponse $response) {
             $this->shift();
 
             return $this->next($request, $response);
