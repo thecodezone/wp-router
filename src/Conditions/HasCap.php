@@ -31,7 +31,7 @@ class HasCap implements Condition
      *
      * @return void
      */
-    public function __construct(string|iterable $capabilities, WP_User|null $user = null)
+    public function __construct(string|iterable $capabilities, $user = null)
     {
         $this->setUser($user);
 

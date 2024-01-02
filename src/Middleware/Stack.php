@@ -2,11 +2,12 @@
 
 namespace CodeZone\Router\Middleware;
 
+use CodeZone\Router\Factories\MiddlewareFactory;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\Response;
 use function CodeZone\Router\container;
 
 /**
@@ -50,7 +51,8 @@ class Stack extends Collection
      * }
      * }
      * the next middleware in the pipeline.
-     * @throws BindingResolutionException If there is an error resolving the Request or Response class from the container.
+     * @throws BindingResolutionException If there is an error resolving the Request
+     *                                    or Response class from the container.
      */
     public function run($request = null, $response = null): Response|null|string|Collection
     {
@@ -79,7 +81,7 @@ class Stack extends Collection
         $middleware = $this->first();
 
         if (is_string($middleware)) {
-            $middleware = container()->make($middleware);
+            $middleware = container()->make(MiddlewareFactory::class)->make($middleware);
         }
 
         if (! $middleware) {
