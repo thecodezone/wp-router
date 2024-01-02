@@ -55,7 +55,11 @@ class MiddlewareFactory implements Factory
         if (isset($registered[ $name ])) {
             $className = $registered[ $name ];
         } else {
-            $className = $name;
+            if ($this->container->has($name)) {
+                $className = $name;
+            } else {
+                throw new BindingResolutionException("Middleware {$name} is not registered.");
+            }
         }
 
         // This filter allows you to add a custom condition resolver.
