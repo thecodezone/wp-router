@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
  */
 class CallbackController
 {
-    public function handle(Request $request, Response $response, callable $handler): Response
+    public function handle(Request $request, Response $response, callable $handler)
     {
         return $handler($request, $response);
     }
