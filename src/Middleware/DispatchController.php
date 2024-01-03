@@ -73,6 +73,7 @@ class DispatchController implements Middleware
         $response = $this->response_factory->make(
             container()->call([ container()->make($class), $method ], [
                 ...$vars,
+                ...$config,
                 $request,
                 $response,
             ]),
