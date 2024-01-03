@@ -4,7 +4,7 @@ namespace CodeZone\Router\Conditions;
 
 use Illuminate\Support\Collection;
 use WP_User;
-use function collect;
+use function CodeZone\Router\collect;
 
 /**
  * Represents a condition based on user capabilities.

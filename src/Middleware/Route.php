@@ -8,6 +8,7 @@ use FastRoute;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function CodeZone\Router\collect;
 use function CodeZone\Router\container;
 
 /**
