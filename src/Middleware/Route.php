@@ -87,7 +87,9 @@ class Route implements Middleware
             $dispatcher->dispatch($http_method, $uri)
         );
 
-        if (! $matches || $matches[0] === FastRoute\Dispatcher::NOT_FOUND) {
+        if (! $matches
+             || $matches[0] === FastRoute\Dispatcher::NOT_FOUND
+             || $matches[0] === FastRoute\Dispatcher::METHOD_NOT_ALLOWED) {
             return false;
         }
 
