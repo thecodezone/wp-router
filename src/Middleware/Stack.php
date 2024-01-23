@@ -76,7 +76,7 @@ class Stack extends Collection
     protected function next(Request $request, BaseResponse $response)
     {
         if ($this->isEmpty()) {
-            return $request;
+            return $response;
         }
 
         $middleware = $this->first();
@@ -86,10 +86,7 @@ class Stack extends Collection
         }
 
         if (! $middleware) {
-            return new Collection([
-                $request,
-                $response,
-            ]);
+            return $response;
         }
 
         if (! $middleware instanceof Middleware) {
