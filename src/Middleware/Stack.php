@@ -55,7 +55,7 @@ class Stack extends Collection
      * @throws BindingResolutionException If there is an error resolving the Request
      *                                    or Response class from the container.
      */
-    public function run($request = null, $response = null): BaseResponse|null|string|Collection
+    public function run($request = null, $response = null)
     {
         return $this->next(
             $request ? $request : container()->make(Request::class),
