@@ -7,6 +7,9 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use WP_Error;
+use function is_array;
+use function is_numeric;
+use function is_string;
 
 /**
  * Class ResponseFactory
@@ -59,12 +62,12 @@ class ResponseFactory implements Factory
             return $value;
         }
 
-        if (! $response) {
-            $response = $this->container->make(Response::class);
-        }
-
-        if (is_numeric($value) || is_string($value) || is_array($value)) {
+        if (is_numeric($value) || is_string($value)) {
             $response->setContent($value);
+        }
+        if (is_array($value)) {
+            $response->setContent($value);
+            $response->headers->set('Content-Type', 'application/json');
         }
 
         if ($value instanceof WP_Error) {

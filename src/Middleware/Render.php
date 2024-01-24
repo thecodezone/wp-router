@@ -24,7 +24,7 @@ class Render implements Middleware
      */
     public function handle(Request $request, Response $response, $next)
     {
-        if (is_array($response->getContent())) {
+        if ($response->headers->get('Content-Type') === 'application/json' || is_array($response->getContent())) {
             $this->renderJson($response);
         } else {
             $this->render($response);
