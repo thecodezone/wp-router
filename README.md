@@ -19,7 +19,7 @@ the Laravel framework for managing dependencies.
 Import the Router class at the top of your PHP file:
 
 ```php
-use CodeZone\Router\Router;
+use CodeZone\Router;
 ```
 
 ### Registering the Router

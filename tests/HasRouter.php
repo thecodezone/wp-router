@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use CodeZone\Router\Router;
+use CodeZone\Router;
 
 trait HasRouter
 {

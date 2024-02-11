@@ -14,7 +14,8 @@
       "CodeZone\\Router\\": "src/"
     },
     "files": [
-      "src/helpers.php"
+      "src/helpers.php",
+      "Router.php"
     ]
   },
   "autoload-dev": {

@@ -3,7 +3,7 @@
 namespace CodeZone\Router\Middleware;
 
 use CodeZone\Router\FastRoute\Routes;
-use CodeZone\Router\Router;
+use CodeZone\Router;
 use FastRoute;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;

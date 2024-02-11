@@ -2,6 +2,7 @@
 
 namespace CodeZone\Router;
 
+use CodeZone\Router;
 use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
 
