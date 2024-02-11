@@ -102,7 +102,7 @@ $r->condition(IsFrontendPath::class, function($r){
 You may also use the `codezone/router/conditions` action to add named conditions:
 
 ```php
-add_action('codezone/router/conditions', function($conditions) {
+add_action( Router::class . '\\' . 'conditions', function($conditions) {
     $conditions['isFrontend'] = IsFrontendPath::class;
 });
 ```
@@ -226,7 +226,7 @@ fine-grained control over when different middleware should be used in your plugi
 You may also use the `codezone/router/middleware` action to add named middleware:
 
 ```php
-add_action('codezone/router/middleware', function($middleware) {
+add_action( Router::class . '\\' . 'middleware', function($middleware) {
     $middleware['auth'] = AuthMiddleware::class;
 });
 ```
@@ -266,7 +266,7 @@ can use along with their descriptions.
 This filter modifies the HTTP response from the router:
 
 ```php
-add_filter('codezone/router/response', function($response) {
+add_filter( Router::class . '\\' . 'response', function($response) {
     return $response;
 });
 ```
@@ -276,9 +276,9 @@ add_filter('codezone/router/response', function($response) {
 This filter is used to modify the error codes.
 
 ```php
-add_filter('codezone/router/error-codes', function($error_codes) {
+add_filter( Router::class . '\\' . 'error_codes', function($error_codes) {
     unset($error_codes[404]);
-    return $error_codes;
+    return $error_codes
 });
 ```
 
@@ -288,7 +288,7 @@ This filter allows you to modify the routable parameters in the router. These pa
 route's path instead of only being passed to the `Request` object.
 
 ```php
-    add_filter('codezone/router/routable_params', function($params) {
+    add_filter(Router::class . '\\' . 'routable_params', function($params) {
         $params['action', 'page', 'tab'];
     });
 
@@ -302,7 +302,7 @@ route's path instead of only being passed to the `Request` object.
 This filter allows you to modify the routes in the router:
 
 ```php
-add_filter('codezone/router/routes', function($routes) {
+add_filter(Router::class . '\\' . 'routes', function($routes) {
     $routes->get('/my-route', 'MyController');
 return $routes;
 });
@@ -313,7 +313,7 @@ return $routes;
 This filter allows you to modify the matched routes in the router:
 
 ```php
-add_filter('codezone/router/matched_routes', function($matchedRoutes) {
+add_filter(Router::class . '\\' . 'matched_routes', function($matchedRoutes) {
     $matchedRoutes[0] =  true;
     $matchedRoutes[1] =  [
         'handler' => [
@@ -334,7 +334,7 @@ An action to render the response. This action is called after the router has mat
 sent to the browser.
 
 ```php
-add_action('codezone/router/render', function($response) {
+add_action( Router::class . '\\' . 'render' ), function($response) {
     echo $response->getContent();
 });
 ```
@@ -345,7 +345,7 @@ An action to render the response as JSON. This action is called after the router
 response is sent to the browser.
 
 ```php
-add_action('codezone/router/render/json', function($response) {
+add_action(Router::class . '\\' . 'render_json', function($response) {
     echo json_encode($response->getContent());
 });
 ```
@@ -355,7 +355,7 @@ add_action('codezone/router/render/json', function($response) {
 An action for adding named middleware. Allows for more reader-friendly route middleware definitions.
 
 ```php
-add_action('codezone/router/middleware', function($middleware) {
+add_action(Router::class . '\\' . 'middleware', function($middleware) {
     $middleware['auth'] = AuthMiddleware::class;
 });
 ```
@@ -365,7 +365,7 @@ add_action('codezone/router/middleware', function($middleware) {
 An action for adding named conditions. Allows for more reader-friendly route condition definitions.
 
 ```php
-add_action('codezone/router/conditions', function($conditions) {
+add_action(Router::class . '\\' . 'conditions', function($conditions) {
     $conditions['isFrontend'] = IsFrontendPath::class;
 });
 ```
@@ -376,7 +376,7 @@ A filter for manually handling the instantiation of named conditions. Use this f
 to parse the condition signature and pass extra parameters to the condition constructor.
 
 ```php
-add_filter('codezone/router/conditions/factory', function(Condition|null $instanceOrNull, array $attributes = []) {
+add_filter(Router::class . '\\' . 'conditions_factory', function(Condition|null $instanceOrNull, array $attributes = []) {
     //Check if this is our named condition
     if ($name !== 'can') {
         return $instanceOrNull;
@@ -399,7 +399,7 @@ As an alternative to using the filter above, you may also implement the `Factory
 condition factory.
 
 ```php
-add_filter('codezone/router/conditions/factory', function(Condition|null $instanceOrNull, array $attributes = []) {
+add_filter(Router::class . '\\' . 'conditions_factory', function(Condition|null $instanceOrNull, array $attributes = []) {
     //Check if this is our named condition
     if ($name !== 'can') {
         return $instanceOrNull;
@@ -422,7 +422,7 @@ A filter for manually handling the instantiation of named middleware. Use this f
 to parse the middleware signature and pass extra parameters to the middleware constructor.
 
 ```php
-add_filter('codezone/router/middleware/factory', function(Middleware|null $instanceOrNull, array $attributes = []) {
+add_filter(Router::class . '\\' . 'middleware_factory', function(Middleware|null $instanceOrNull, array $attributes = []) {
     //Check if this is our named middleware
     if ($name !== 'can') {
         return $instanceOrNull;
@@ -445,7 +445,7 @@ As an alternative to using the filter above, you may also implement the `Factory
 middleware factory.
 
 ```php
-add_filter('codezone/router/conditions/factories', function($factories) {
+add_filter(Router::class . '\\' . 'conditions_factories', function($factories) {
     $factories[UserHasCap::class] = UserHasCapFactory::class;
     return $factories;
 });

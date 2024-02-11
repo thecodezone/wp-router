@@ -34,7 +34,27 @@ function is_json($string)
 }
 
 
+/**
+ * Creates a new Collection instance from the given items.
+ *
+ * @param array $items The items to be collected (optional, default: empty array)
+ *
+ * @return Collection The new Collection instance populated with the given items
+ */
 function collect($items = []): Collection
 {
     return new Collection($items);
+}
+
+
+/**
+ * Concatenates the given string to the namespace of the Router class.
+ *
+ * @param string $string The string to be concatenated to the namespace.
+ *
+ * @return string The result of concatenating the given string to the namespace of the Router class.
+ */
+function namespace_string(string $string)
+{
+    return Router::class . '\\' . $string;
 }

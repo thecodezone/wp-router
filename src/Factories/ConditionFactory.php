@@ -11,6 +11,7 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use function CodeZone\Router\namespace_string;
 
 /**
  * The ConditionFactory class is responsible for creating Condition objects.
@@ -106,7 +107,7 @@ class ConditionFactory implements Factory
 
         // This filter allows you to add a custom condition resolver.
 
-        $condition = apply_filters('codezone/router/conditions/factory', null, [
+        $condition = apply_filters(namespace_string('conditions_factory'), null, [
             'className' => $className,
             'name'      => $name,
             'signature' => $signature
@@ -117,7 +118,7 @@ class ConditionFactory implements Factory
 
         // Or you can add a custom condition factory to resolve the condition.
         // It should implement the Conditions\ConditionFactory.
-        $factories = apply_filters('codezone/router/conditions/factories', $this->factories);
+        $factories = apply_filters(namespace_string('conditions_factories'), $this->factories);
         $factory   = $factories[ $className ] ?? null;
         if ($factory) {
             return $this->container->make($factory)->make($signature);
@@ -136,6 +137,6 @@ class ConditionFactory implements Factory
      */
     public function getRegisteredConditions(): array
     {
-        return apply_filters('codezone/router/conditions', []);
+        return apply_filters(namespace_string('conditions'), []);
     }
 }

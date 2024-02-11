@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use function array_filter;
+use function CodeZone\Router\namespace_string;
 
 /**
  * Class HandleErrors
@@ -38,15 +39,20 @@ class HandleErrors implements Middleware
      * Initializes a new instance of the class.
      *
      * This method sets the status codes using the filters applied to the 'codezone/router/error-codes' hook.
-     * The status codes are filtered from the Response::$statusTexts array, with only codes equal to or greater than 400 included.
+     * The status codes are filtered from the Response::$statusTexts array,
+     * with only codes equal to or greater than 400 included.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->statusCodes = apply_filters('codezone/router/error-codes', array_filter(Response::$statusTexts, function ($code) {
-            return $code >= 400;
-        }, ARRAY_FILTER_USE_KEY));
+        $this->statusCodes = apply_filters(
+            namespace_string('error_codes'),
+            array_filter(Response::$statusTexts, function ($code) {
+                return $code >= 400;
+            },
+                ARRAY_FILTER_USE_KEY)
+        );
     }
 
     /**

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use function CodeZone\Router\collect;
 use function CodeZone\Router\container;
+use function CodeZone\Router\namespace_string;
 
 /**
  * Represents a route in an application.
@@ -54,7 +55,11 @@ class Route implements Middleware
     {
         $http_method         = $request->getMethod();
         $uri                 = $request->getRequestUri();
-        $routable_param_keys = apply_filters('codezone/router/routable_params', [ 'page', 'action', 'tab' ]) ?? [];
+        $routable_param_keys = apply_filters(namespace_string('routable_params'), [
+            'page',
+            'action',
+            'tab'
+        ]) ?? [];
         $routable_params     = collect($request->query->all())->only($routable_param_keys);
 
         // Strip query string (?foo=bar) and decode URI
@@ -79,11 +84,11 @@ class Route implements Middleware
                 $handler = $this->handler;
                 $handler($r);
             }
-            apply_filters('codezone/router/routes', $r);
+            apply_filters(namespace_string('routes'), $r);
         });
 
         $matches = apply_filters(
-            'codezone/router/matched_routes',
+            namespace_string('matched_routes'),
             $dispatcher->dispatch($http_method, $uri)
         );
 

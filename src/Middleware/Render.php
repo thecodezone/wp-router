@@ -4,6 +4,7 @@ namespace CodeZone\Router\Middleware;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function CodeZone\Router\namespace_string;
 
 /**
  * Class Render
@@ -42,9 +43,9 @@ class Render implements Middleware
      */
     protected function renderJson(Response $response): void
     {
-        $hasHandler = has_action('codezone/router/render/json');
+        $hasHandler = has_action(namespace_string('render_json'));
         if ($hasHandler) {
-            do_action('codezone/router/render/json', $response);
+            do_action(namespace_string('render_json'), $response);
 
             return;
         }
@@ -60,9 +61,9 @@ class Render implements Middleware
      */
     protected function render(Response $response): void
     {
-        $hasHandler = has_action('codezone/router/render');
+        $hasHandler = has_action(namespace_string('render'));
         if ($hasHandler) {
-            do_action('codezone/router/render', $response);
+            do_action(namespace_string('render'), $response);
 
             return;
         }

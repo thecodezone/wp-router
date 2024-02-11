@@ -7,6 +7,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use WP_Error;
+use function CodeZone\Router\namespace_string;
 use function is_array;
 use function is_numeric;
 use function is_string;
@@ -44,7 +45,7 @@ class ResponseFactory implements Factory
     {
         $response = $options['response'] ?? null;
 
-        return apply_filters('codezone/router/response', $this->mapResponse($value, $response));
+        return apply_filters(namespace_string('response'), $this->mapResponse($value, $response));
     }
 
     /**

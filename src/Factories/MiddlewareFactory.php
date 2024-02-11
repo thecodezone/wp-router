@@ -8,6 +8,7 @@ use CodeZone\Router\Middleware\UserHasCap;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Str;
+use function CodeZone\Router\namespace_string;
 
 /**
  * The MiddlewareFactory class is responsible for creating middleware instances.
@@ -63,7 +64,7 @@ class MiddlewareFactory implements Factory
         }
 
         // This filter allows you to add a custom condition resolver.
-        $middleware = apply_filters('codezone/router/middleware/factory', null, [
+        $middleware = apply_filters(namespace_string('middleware_factory'), null, [
             'className' => $className,
             'name'      => $name,
             'signature' => $signature
@@ -75,7 +76,7 @@ class MiddlewareFactory implements Factory
 
         // Or you can add a custom condition factory to resolve the middleware.
         // It should implement the Conditions\Middleware.
-        $factories = apply_filters('codezone/router/middleware/factories', $this->factories);
+        $factories = apply_filters(namespace_string('middleware_factories'), $this->factories);
         $factory   = $factories[ $className ] ?? null;
 
         if ($factory) {
@@ -95,7 +96,7 @@ class MiddlewareFactory implements Factory
      */
     public function getRegisteredMiddleware(): array
     {
-        return apply_filters('codezone/router/middleware', []);
+        return apply_filters(namespace_string('middleware'), []);
     }
 
     /**
