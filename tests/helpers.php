@@ -41,6 +41,11 @@ function wp_redirect($url, $status = 302)
     //ignore it
 }
 
+function status_header($code)
+{
+    //ignore it
+}
+
 function __($message, $domain)
 {
     return $message;
