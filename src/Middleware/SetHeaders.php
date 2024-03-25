@@ -26,6 +26,8 @@ class SetHeaders implements Middleware {
 			header( 'Content-Type: application/json' );
 		}
 
+		status_header($response->getStatusCode());
+
 		return $next( $request, $response );
 	}
 }
