@@ -67,6 +67,9 @@ class DispatchController implements Middleware
                                    ->push(HandleRedirects::class)
                                    ->push(HandleErrors::class)
                                    ->run($request, $response);
+            if (! $response || ! $response->isSuccessful()) {
+                return $response;
+            }
         }
 
         //Call the  controller method
