@@ -14,98 +14,104 @@ use Illuminate\Container\Container;
  *
  * @package CodeZone\Router
  */
-class Router {
-	/**
-	 * @var Router|null
-	 */
-	protected static ?Router $instance = null;
-	/**
-	 * @var Container|mixed
-	 */
-	public Container $container;
-	/**
-	 * @var array
-	 */
-	public array $config;
-	/**
-	 * @var DispatcherFactory
-	 */
-	protected DispatcherFactory $dispatcherFactory;
+class Router
+{
+    /**
+     * @var Router|null
+     */
+    protected static ?Router $instance = null;
+    /**
+     * @var Container|mixed
+     */
+    public Container $container;
+    /**
+     * @var array
+     */
+    public array $config;
+    /**
+     * @var DispatcherFactory
+     */
+    protected DispatcherFactory $dispatcherFactory;
 
-	/**
-	 * @param array $config
-	 * @param DispatcherFactory $dispatcherFactory
-	 *
-	 * @throws Exception
-	 */
-	public function __construct( array $config, DispatcherFactory $dispatcherFactory ) {
-		static::validateConfig( $config );
+    /**
+     * @param array $config
+     * @param DispatcherFactory $dispatcherFactory
+     *
+     * @throws Exception
+     */
+    public function __construct(array $config, DispatcherFactory $dispatcherFactory)
+    {
+        static::validateConfig($config);
 
-		$this->config            = $config;
-		$this->container         = $config['container'];
-		$this->dispatcherFactory = $dispatcherFactory;
-	}
+        $this->config            = $config;
+        $this->container         = $config['container'];
+        $this->dispatcherFactory = $dispatcherFactory;
+    }
 
-	/**
-	 * Validate the router config
-	 *
-	 * @param array $config
-	 *
-	 * @throws Exception
-	 */
-	public static function validateConfig( array $config ): void {
-		if ( ! $config['container'] instanceof Container ) {
-			throw new Exception( 'Container must be an instance of Illuminate\Container\Container' );
-		}
-	}
+    /**
+     * Validate the router config
+     *
+     * @param array $config
+     *
+     * @throws Exception
+     */
+    public static function validateConfig(array $config): void
+    {
+        if (! $config['container'] instanceof Container) {
+            throw new Exception('Container must be an instance of Illuminate\Container\Container');
+        }
+    }
 
-	/**
-	 * Get the router instance
-	 *
-	 * @return Router\Router
-	 * @throws Exception
-	 */
-	public static function instance(): Router {
-		if ( ! static::$instance ) {
-			throw new Exception( 'Router not registered.' );
-		}
+    /**
+     * Get the router instance
+     *
+     * @return Router\Router
+     * @throws Exception
+     */
+    public static function instance(): Router
+    {
+        if (! static::$instance) {
+            throw new Exception('Router not registered.');
+        }
 
-		return static::$instance;
-	}
+        return static::$instance;
+    }
 
-	/**
-	 * Register the router with a container
-	 *
-	 * @param Config $config
-	 *
-	 * @throws Exception
-	 */
-	public static function register( array $config ): Router {
-		static::validateConfig( $config );
+    /**
+     * Register the router with a container
+     *
+     * @param Config $config
+     *
+     * @throws Exception
+     */
+    public static function register(array $config): Router
+    {
+        static::validateConfig($config);
 
-		$container = $config['container'];
+        $container = $config['container'];
 
-		if ( ! $container->has( self::class ) ) {
-			$container->singleton( self::class, function ( $container ) use ( $config ) {
-				return new Router( $config, $container->make( DispatcherFactory::class ) );
-			} );
-		}
+        if (! $container->has(self::class)) {
+            $container->singleton(self::class, function ($container) use ($config) {
+                return new Router($config, $container->make(DispatcherFactory::class));
+            });
+        }
 
-		$instance       = $container->make( self::class );
-		self::$instance = $instance;
+        $instance       = $container->make(self::class);
+        self::$instance = $instance;
 
-		return $instance;
-	}
+        return $instance;
+    }
 
-	/**
-	 * Register routes via a callback
-	 *
-	 * @param callable $callback
-	 * @param array $options
-	 *
-	 * @return Dispatcher
-	 */
-	public function routes( callable $callback, array $options = [] ): Dispatcher {
-		return $this->dispatcherFactory->make( $callback, $options );
-	}
+    /**
+     * Register routes via a callback
+     *
+     * @param callable $callback
+     * @param array $options
+     *
+     * @return Dispatcher
+     */
+    public function routes(callable $callback, array $options = []): Dispatcher
+    {
+        return $this->dispatcherFactory->make($callback, $options);
+    }
 }

@@ -5,6 +5,7 @@ namespace CodeZone\Router\FastRoute;
 use CodeZone\Router\Controllers\CallbackController;
 use CodeZone\Router\Factories\ConditionFactory;
 use FastRoute\RouteCollector;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
 use function CodeZone\Router\container;
 
@@ -61,7 +62,7 @@ class Routes extends RouteCollector {
 		}
 
 		if ( is_callable( $handler ) ) {
-			$handler = [CallbackController::class, 'handle', [ 'handler' => $handler ] ];
+			$handler = [ CallbackController::class, 'handle', [ 'handler' => $handler ] ];
 		}
 
 		if ( ! isset( $handler[2] ) ) {
@@ -125,11 +126,20 @@ class Routes extends RouteCollector {
 	 */
 	public function addMiddleware( $middleware, $callback ) {
 		$middleware              = is_string( $middleware ) ? [ $middleware ] : $middleware;
-		$this->currentMiddleware = $middleware;
+		$this->currentMiddleware = array_merge( $this->currentMiddleware, $middleware );
 		$callback( $this );
-		$this->currentMiddleware = [];
+		$this->currentMiddleware = array_diff( $this->currentMiddleware, $middleware );
 	}
 
+	/**
+	 * Alias for addCondition
+	 *
+	 * @param $condition
+	 * @param callable $callback
+	 *
+	 * @return void
+	 * @throws BindingResolutionException
+	 */
 	public function condition( $condition, callable $callback ) {
 		$this->addCondition( $condition, $callback );
 	}
@@ -141,6 +151,7 @@ class Routes extends RouteCollector {
 	 * @param callable $callback
 	 *
 	 * @return void
+	 * @throws BindingResolutionException
 	 */
 	public function addCondition( $condition, callable $callback ) {
 		$condition = container()->make( ConditionFactory::class )->make( $condition );
