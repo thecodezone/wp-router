@@ -50,7 +50,7 @@ class Render implements Middleware
             return;
         }
         $response->send();
-        die;
+        exit;
     }
 
     /**
@@ -70,7 +70,7 @@ class Render implements Middleware
         }
         if ($response->getStatusCode() === 200) {
             $response->send();
-            die;
+            exit;
         }
     }
 }
