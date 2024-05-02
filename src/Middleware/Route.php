@@ -2,8 +2,8 @@
 
 namespace CodeZone\Router\Middleware;
 
-use CodeZone\Router\FastRoute\Routes;
 use CodeZone\Router;
+use CodeZone\Router\FastRoute\Routes;
 use FastRoute;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
@@ -55,28 +55,31 @@ class Route implements Middleware
     {
         $http_method         = $request->getMethod();
         $uri                 = $request->getRequestUri();
-        $routable_param_keys = apply_filters(namespace_string('routable_params'), [
-            'page',
-            'action',
-            'tab'
-        ]) ?? [];
-        $routable_params     = collect($request->query->all())->only($routable_param_keys);
+        $route_param         = container()->make(Router::class)->config['route_param'] ?? null;
 
-        // Strip query string (?foo=bar) and decode URI
-        $pos = strpos($uri, '?');
-        if ($pos !== false) {
-            $uri = substr($uri, 0, $pos);
+        if ($route_param && $request->has($route_param)) {
+            $uri = $request->get($route_param);
+        } else {
+            $routable_param_keys = apply_filters(namespace_string('routable_params'), [
+                'page',
+                'action',
+                'tab'
+            ]) ?? [];
+            $routable_params     = collect($request->query->all())->only($routable_param_keys);
+            // Strip query string (?foo=bar) and decode URI
+            $pos = strpos($uri, '?');
+            if ($pos !== false) {
+                $uri = substr($uri, 0, $pos);
+            }
+            //Allow for including certain params in the route,
+            //Like page=general
+            //or action=save
+            //or tab=general
+            if (count($routable_params)) {
+                $uri = $uri . '?' . http_build_query($routable_params->toArray());
+            }
+            $uri = trim(rawurldecode($uri), '/');
         }
-
-        //Allow for including certain params in the route,
-        //Like page=general
-        //or action=save
-        //or tab=general
-        if (count($routable_params)) {
-            $uri = $uri . '?' . http_build_query($routable_params->toArray());
-        }
-
-        $uri = trim(rawurldecode($uri), '/');
 
         //Get the matching route data from the router
         $dispatcher = container()->make(Router::class)->routes(function (Routes $r) {
