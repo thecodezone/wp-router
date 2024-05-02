@@ -57,8 +57,8 @@ class Route implements Middleware
         $uri                 = $request->getRequestUri();
         $route_param         = container()->make(Router::class)->config['route_param'] ?? null;
 
-        if ($route_param && $request->has($route_param)) {
-            $uri = $request->get($route_param);
+        if ($route_param && get_query_var($route_param)) {
+            $uri = get_query_var($route_param);
         } else {
             $routable_param_keys = apply_filters(namespace_string('routable_params'), [
                 'page',
