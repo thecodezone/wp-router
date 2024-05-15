@@ -41,7 +41,7 @@ class UserHasCap implements Middleware
      * @param string|null $redirect_to The redirect_to parameter that specifies the target URL to redirect to after
      *                                completing the construction. It is set to null by default.
      */
-    public function __construct(string|iterable $capabilities, string|null $redirect_to = null)
+    public function __construct($capabilities, $redirect_to = null)
     {
         $this->capabilities = is_string($capabilities) ? explode(',', $capabilities) : $capabilities;
         $this->redirect_to  = $redirect_to;

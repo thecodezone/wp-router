@@ -57,7 +57,7 @@ class ResponseFactory implements Factory
      * @return Response
      * @throws BindingResolutionException
      */
-    private function mapResponse($value = null, BaseResponse|null $response = null): BaseResponse
+    private function mapResponse($value = null, $response = null): BaseResponse
     {
         if ($value instanceof BaseResponse) {
             return $value;

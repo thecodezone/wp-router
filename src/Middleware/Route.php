@@ -32,7 +32,7 @@ class Route implements Middleware
      *
      * @return void
      */
-    public function __construct(callable|null $handler = null)
+    public function __construct( $handler = null)
     {
         if ($handler) {
             $this->handler = $handler;

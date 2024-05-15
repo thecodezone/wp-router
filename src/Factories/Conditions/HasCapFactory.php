@@ -69,7 +69,7 @@ class HasCapFactory implements Factory
      *
      * @return WP_User|false The currently logged-in user, or false if no user is logged in.
      */
-    protected function getCurrentUser(): WP_User|false
+    protected function getCurrentUser()
     {
         return wp_get_current_user();
     }
