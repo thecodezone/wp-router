@@ -50,7 +50,7 @@ class ConditionFactory implements Factory
      * @return Condition The newly created condition object or collection of condition objects.
      * @throws BindingResolutionException
      */
-    public function make(mixed $value = null, iterable $options = []): Condition
+    public function make($value = null, iterable $options = []): Condition
     {
         if (! $value) {
             return new CallbackCondition(function () {

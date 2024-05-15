@@ -37,7 +37,7 @@ class HasCapFactory implements Factory
      *
      * @return Condition
      */
-    public function make(mixed $value = null, iterable $options = []): Condition
+    public function make($value = null, iterable $options = []): Condition
     {
         if ($value instanceof Condition) {
             return $value;

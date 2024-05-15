@@ -29,7 +29,7 @@ class UserHasCap implements Middleware
      * The variable that holds the URL to redirect to.
      * It can either be a string representing a valid URL or null if no redirection is needed.
      */
-    protected mixed $redirect_to;
+    protected $redirect_to;
 
     /**
      * __construct method.

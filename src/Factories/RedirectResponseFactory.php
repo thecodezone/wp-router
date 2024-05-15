@@ -16,7 +16,7 @@ class RedirectResponseFactory implements Factory
         $this->container = $container;
     }
 
-    public function make(mixed $value = null, iterable $options = []): RedirectResponse
+    public function make($value = null, iterable $options = []): RedirectResponse
     {
         $status  = $options['status'] ?? 302;
         $headers = $options['headers'] ?? [];

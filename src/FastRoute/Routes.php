@@ -2,6 +2,7 @@
 
 namespace CodeZone\Router\FastRoute;
 
+use Closure;
 use CodeZone\Router\Controllers\CallbackController;
 use CodeZone\Router\Factories\ConditionFactory;
 use FastRoute\RouteCollector;
@@ -61,7 +62,7 @@ class Routes extends RouteCollector {
 			$handler = explode( '@', $handler, 2 );
 		}
 
-		if ( is_callable( $handler ) ) {
+		if ( $handler instanceof Closure ) {
 			$handler = [ CallbackController::class, 'handle', [ 'handler' => $handler ] ];
 		}
 

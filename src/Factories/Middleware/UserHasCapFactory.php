@@ -37,7 +37,7 @@ class UserHasCapFactory implements Factory
      *
      * @return Middleware
      */
-    public function make(mixed $value = null, iterable $options = [])
+    public function make($value = null, iterable $options = [])
     {
         if ($value instanceof Middleware) {
             return $value;

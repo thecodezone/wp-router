@@ -26,7 +26,7 @@ class DispatcherFactory implements Factory
      *
      * @return BaseDispatcher An instance of the base dispatcher.
      */
-    public function make(mixed $value = null, $options = []): BaseDispatcher
+    public function make($value = null, $options = []): BaseDispatcher
     {
         return simpleDispatcher($value, array_merge($options, [
             'routeCollector' => Routes::class,

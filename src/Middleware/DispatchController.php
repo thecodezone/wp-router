@@ -72,17 +72,13 @@ class DispatchController implements Middleware
             }
         }
 
-        //Call the  controller method
+        $parameters = array_merge($vars, $config);
+        $parameters = array_merge($parameters, ['request' => $request, 'response' => $response]);
+        $controller = container()->make($class);
+        $action = container()->call([$controller, $method], $parameters);
         $response = $this->response_factory->make(
-            container()->call([ container()->make($class), $method ], [
-                ...$vars,
-                ...$config,
-                $request,
-                $response,
-            ]),
-            [
-                'response' => $response_before_controller
-            ]
+            $action,
+            ['response' => $response_before_controller]
         );
 
         return $next($request, $response);

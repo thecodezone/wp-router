@@ -41,7 +41,7 @@ class ResponseFactory implements Factory
      * @return Response
      * @throws BindingResolutionException
      */
-    public function make(mixed $value = null, iterable $options = []): BaseResponse
+    public function make($value = null, iterable $options = []): BaseResponse
     {
         $response = $options['response'] ?? null;
 
