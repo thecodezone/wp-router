@@ -19,9 +19,9 @@ class DispatchMiddlewareTest extends TestCase
         $this->router();
         $request = container()->make(Request::class);
         $response = container()->make(Response::class);
-        $request->routes = $this->router()->routes(function ($router) {
+        $request->attributes->set('route_info', $this->router()->routes(function ($router) {
             $router->get('/', [Controller::class, 'request']);
-        })->dispatch('GET', '/');
+        })->dispatch('GET', '/'));
         $middleware = container()->make(DispatchController::class);
         $middleware->handle($request, $response, function ($request, $response) {
             $this->assertStringContainsString('Hello', $response->getContent());
@@ -36,9 +36,9 @@ class DispatchMiddlewareTest extends TestCase
         $this->router();
         $request = container()->make(Request::class);
         $response = container()->make(Response::class);
-        $request->routes = $this->router()->routes(function ($router) {
+        $request->attributes->set('route_info', $this->router()->routes(function ($router) {
             $router->get('/{param}', [Controller::class, 'withParam']);
-        })->dispatch('GET', '/hello');
+        })->dispatch('GET', '/hello'));
         $middleware = container()->make(DispatchController::class);
         $middleware->handle($request, $response, function ($request, $response) {
             $this->assertStringContainsString('hello', $response->getContent());
@@ -53,9 +53,9 @@ class DispatchMiddlewareTest extends TestCase
         $this->router();
         $request = container()->make(Request::class);
         $response = container()->make(Response::class);
-        $request->routes = $this->router()->routes(function ($router) {
+        $request->attributes->set('route_info', $this->router()->routes(function ($router) {
             $router->get('/', [Controller::class, 'returnsString']);
-        })->dispatch('GET', '/');
+        })->dispatch('GET', '/'));
         $middleware = container()->make(DispatchController::class);
         $middleware->handle($request, $response, function ($request, $response) {
             $this->assertStringContainsString('Hello', $response->getContent());

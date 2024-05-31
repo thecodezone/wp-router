@@ -39,7 +39,7 @@ class RouteMiddlewareTest extends TestCase {
 			},
 		] );
 		$middleware->handle( $request, $response, function ($request, $response) {
-			$this->assertNotNull( $request->routes );
+			$this->assertNotNull( $request->attributes->get( 'route_info' ) );
 		} );
 	}
 }

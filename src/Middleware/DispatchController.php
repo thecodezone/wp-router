@@ -42,7 +42,7 @@ class DispatchController implements Middleware
      */
     public function handle(Request $request, Response $response, $next)
     {
-        $route_info = $request->routes;
+        $route_info = $request->attributes->get('route_info');
 
         if (! $route_info) {
             return $next($request);

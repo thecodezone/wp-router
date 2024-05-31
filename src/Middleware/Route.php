@@ -101,8 +101,7 @@ class Route implements Middleware
             return false;
         }
 
-        //Apply the matching route data to the request
-        $request->routes = $matches;
+        $request->attributes->set('route_info', $matches);
 
         return $next($request, $response);
     }
